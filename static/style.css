@@ -1,0 +1,361 @@
+/* Custom Fonts */
+.font-orbitron {
+  font-family: 'Orbitron', sans-serif;
+}
+
+.font-lexend {
+  font-family: 'Lexend', sans-serif;
+}
+
+/* Color Variables */
+:root {
+  --primary-blue: #1E90FF; /* Accent color for progress rings */
+  --dark-bg: #1A0B2E;
+  --light-gray: #F5F5F5;
+  --text-gray: #666;
+}
+
+/* Glassmorphism Effect (Retained for other sections) */
+.glassmorphic {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+/* Neumorphic Effect (Retained for other sections) */
+.neumorphic {
+  background: #6B46C1;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3), -5px -5px 15px rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.neumorphic:hover {
+  box-shadow: inset 5px 5px 15px rgba(0, 0, 0, 0.3), inset -5px -5px 15px rgba(255, 255, 255, 0.1);
+}
+
+/* Glow Effect (Retained for other sections) */
+.glow {
+  text-shadow: 0 0 10px var(--primary-blue);
+  transition: text-shadow 0.3s ease;
+}
+
+.glow:hover {
+  text-shadow: 0 0 15px var(--primary-blue);
+}
+
+img.glow {
+  box-shadow: 0 0 15px var(--primary-blue);
+}
+
+/* Gradient wipe animation for #typing-text */
+#typing-text {
+  display: block;
+  visibility: visible;
+  opacity: 1;
+  background: linear-gradient(to right, rgba(209, 213, 219, 0) 0%, rgba(209, 213, 219, 1) 50%, rgba(209, 213, 219, 1) 100%);
+  background-size: 200% 100%;
+  background-position: -100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: gradientWipe 2s ease-out forwards 1s;
+}
+
+@keyframes gradientWipe {
+  0% {
+    background-position: -100%;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+  100% {
+    background-position: 100%;
+    -webkit-text-fill-color: rgb(209, 213, 219);
+    color: rgb(209, 213, 219);
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+/* Ensure hero section contents stay visible */
+#home .animate-slide-in,
+#home .animate-slide-in h1,
+#home .animate-slide-in p,
+#home .animate-slide-in .flex {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Ensure the image stays visible */
+#home .animate-fade-in {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Underline Effect */
+.underline {
+  width: 80px;
+  height: 4px;
+  background: var(--primary-blue);
+  margin: 0 auto;
+  border-radius: 2px;
+}
+
+/* Buttons */
+.btn-primary {
+  background: var(--primary-blue);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 20px var(--primary-blue);
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 2px solid var(--primary-blue);
+  color: var(--primary-blue);
+  padding: 10px 20px;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-secondary:hover {
+  background: var(--primary-blue);
+  color: #fff;
+  box-shadow: 0 0 20px var(--primary-blue);
+}
+
+/* Ripple Effect */
+.ripple .ripple-effect {
+  content: '';
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: scale(0);
+  animation: ripple-effect 0.6s ease-out;
+}
+
+@keyframes ripple-effect {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* Skills Section New Design */
+#skills {
+  background: #fff; /* Clean white background */
+  position: relative;
+  overflow: hidden;
+}
+
+/* Style for skill cards in horizontal scroll */
+#skills-grid {
+  display: flex; /* Ensure flexbox is applied */
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Modern Skill Card Design */
+.skill-card {
+  flex: 0 0 200px; /* Compact width */
+  height: 300px; /* Taller to fit skills vertically */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  background: var(--light-gray);
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding: 1rem;
+  margin: 0 1rem; /* Increased horizontal margin for more spacing */
+}
+
+/* Hover Effect */
+.skill-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Icon Styling */
+.skill-card i {
+  font-size: 2rem;
+  color: var(--primary-blue);
+  margin-bottom: 0.5rem;
+}
+
+/* Category Title */
+.skill-card h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+/* Adjust the skills list inside the card */
+.skill-card .space-y-3 {
+  width: 100%;
+  overflow-y: auto;
+}
+
+/* Style the scrollbar for the skills list inside the card */
+.skill-card .space-y-3::-webkit-scrollbar {
+  width: 4px;
+}
+
+.skill-card .space-y-3::-webkit-scrollbar-track {
+  background: #E5E5E5;
+}
+
+.skill-card .space-y-3::-webkit-scrollbar-thumb {
+  background: var(--primary-blue);
+  border-radius: 4px;
+}
+
+.skill-card .space-y-3::-webkit-scrollbar-thumb:hover {
+  background: #1E70D0;
+}
+
+/* Skill Item Layout */
+.skill-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Skill Name */
+.skill-item span:first-child {
+  flex: 1;
+  text-align: left;
+  font-size: 0.9rem;
+  color: var(--text-gray);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 80px;
+}
+
+/* Circular Progress Container */
+.progress-circle-container {
+  position: relative;
+  width: 40px;
+  height: 40px;
+}
+
+/* Circular Progress Background */
+.progress-circle-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #E5E5E5;
+}
+
+/* Circular Progress Fill (SVG) */
+.progress-circle {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg); /* Start from the top */
+}
+
+/* Percentage Text Inside Circle */
+.progress-percentage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.7rem;
+  color: var(--text-gray);
+}
+
+/* Ensure skills section is visible */
+#skills,
+#skills-grid,
+.skill-card,
+.skill-item,
+.progress-circle-container,
+.progress-circle,
+.progress-percentage {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Custom Scrollbar for the horizontal scroll */
+#skills-grid::-webkit-scrollbar {
+  height: 8px;
+}
+
+#skills-grid::-webkit-scrollbar-track {
+  background: #E5E5E5;
+}
+
+#skills-grid::-webkit-scrollbar-thumb {
+  background: var(--primary-blue);
+  border-radius: 4px;
+}
+
+#skills-grid::-webkit-scrollbar-thumb:hover {
+  background: #1E70D0;
+}
+
+/* Project Overlay (Retained for other sections) */
+.project-overlay {
+  background: var(--primary-blue);
+  transition: opacity 0.3s ease;
+}
+
+/* Global Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #2D1B46;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-blue);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #1E70D0;
+}
+
+/* Animations */
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(50px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Remove CSS animation since we're using GSAP */
+.animate-slide-in {
+  /* No animation here; GSAP will handle it */
+}
+
+.animate-fade-in {
+  animation: fadeIn 1.5s ease-in-out;
+}
