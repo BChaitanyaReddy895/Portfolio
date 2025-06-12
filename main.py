@@ -83,7 +83,7 @@ projects_data = [
     {
         "title": "VEXA Chatbot",
         "description": "An AI-powered chatbot for Sahayak Organization, assisting users with queries about underprivileged children's development.",
-        "image": "static\images\Vexa Chatbot.png",
+        "image": "static/images/Vexa Chatbot.png",
         "technologies": ["Python", "Deep Learning", "PyTorch", "Flask", "HTML", "CSS"],
         "githubLink": "https://github.com/BChaitanyaReddy895/vexa_chatbot",
         "liveLink": "https://chaitanya895-sahayak.hf.space"
@@ -91,7 +91,7 @@ projects_data = [
     {
         "title": "Bangla to English Translator",
         "description": "A machine learning model translating Bangla text, images, PDFs, and websites to English using NLP and web crawling techniques.",
-        "image": "static\images\translator.png",
+        "image": "static/images/translator.png",
         "technologies": ["Python", "NLP", "HTML", "CSS", "JavaScript"],
         "githubLink": "https://github.com/BChaitanyaReddy895/Bengali_English_translator",
         "liveLink": "https://chaitanya895-bangla-translator.hf.space"
