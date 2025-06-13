@@ -10,9 +10,9 @@ app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
 
 # Email configuration (replace with your Gmail credentials)
-EMAIL_ADDRESS = "chaituchaithanyareddy895@gmail.com"  # Replace with your Gmail address
-EMAIL_PASSWORD = "einf clqk oyds ucuj"    # Replace with your Gmail App Password
-RECIPIENT_EMAIL = "chaituchaithanyareddy895@gmail.com"  # The email where you want to receive messages
+EMAIL_ADDRESS = "chaituchaithanyareddy895@gmail.com"
+EMAIL_PASSWORD = "einf clqk oyds ucuj"
+RECIPIENT_EMAIL = "chaituchaithanyareddy895@gmail.com"
 
 # Data for API endpoints
 skills_data = [
@@ -79,11 +79,14 @@ hobbies_data = [
     }
 ]
 
+# In-memory storage for reviews (for "Educating Others" hobby)
+reviews_data = []
+
 projects_data = [
     {
         "title": "VEXA Chatbot",
         "description": "An AI-powered chatbot for Sahayak Organization, assisting users with queries about underprivileged children's development.",
-        "image": "static/images/Vexa Chatbot.png",
+        "image": "/static/images/Vexa Chatbot.png",
         "technologies": ["Python", "Deep Learning", "PyTorch", "Flask", "HTML", "CSS"],
         "githubLink": "https://github.com/BChaitanyaReddy895/vexa_chatbot",
         "liveLink": "https://chaitanya895-sahayak.hf.space"
@@ -91,7 +94,7 @@ projects_data = [
     {
         "title": "Bangla to English Translator",
         "description": "A machine learning model translating Bangla text, images, PDFs, and websites to English using NLP and web crawling techniques.",
-        "image": "static/images/translator.png",
+        "image": "/static/images/translator.png",
         "technologies": ["Python", "NLP", "HTML", "CSS", "JavaScript"],
         "githubLink": "https://github.com/BChaitanyaReddy895/Bengali_English_translator",
         "liveLink": "https://chaitanya895-bangla-translator.hf.space"
@@ -152,6 +155,33 @@ def get_hobbies():
     except Exception as e:
         logging.error(f"Error in /api/hobbies: {str(e)}")
         return jsonify({"error": "Internal server error"}), 500
+
+@app.route('/api/reviews', methods=['GET', 'POST'])
+def handle_reviews():
+    global reviews_data
+    if request.method == 'POST':
+        try:
+            data = request.get_json()
+            if not data or 'rating' not in data or 'description' not in data or 'name' not in data:
+                return jsonify({"error": "Invalid request data"}), 400
+            rating = int(data['rating'])
+            if rating < 1 or rating > 5:
+                return jsonify({"error": "Rating must be between 1 and 5"}), 400
+            description = data['description']
+            name = data['name']
+            review = {"name": name, "rating": rating, "description": description}
+            reviews_data.append(review)
+            logging.info(f"New review added: {review}")
+            return jsonify({"message": "Review submitted successfully!"})
+        except Exception as e:
+            logging.error(f"Error in /api/reviews POST: {str(e)}")
+            return jsonify({"error": "Internal server error"}), 500
+    else:  # GET request
+        try:
+            return jsonify(reviews_data)
+        except Exception as e:
+            logging.error(f"Error in /api/reviews GET: {str(e)}")
+            return jsonify({"error": "Internal server error"}), 500
 
 @app.route('/api/projects')
 def get_projects():
