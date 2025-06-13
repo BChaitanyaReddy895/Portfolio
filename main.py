@@ -3,6 +3,8 @@ import logging
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import sqlite3
+import os
 
 app = Flask(__name__)
 
@@ -13,6 +15,45 @@ logging.basicConfig(level=logging.INFO)
 EMAIL_ADDRESS = "chaituchaithanyareddy895@gmail.com"
 EMAIL_PASSWORD = "einf clqk oyds ucuj"
 RECIPIENT_EMAIL = "chaituchaithanyareddy895@gmail.com"
+
+# Admin password for delete functionality (replace with a secure password)
+ADMIN_PASSWORD = "securepassword123"  # Change this to a strong password
+
+# SQLite database setup
+# Use /tmp for Hugging Face Spaces, fallback to current directory if writable
+DB_DIR = "/tmp" if os.access("/tmp", os.W_OK) else os.getcwd()
+DB_PATH = os.path.join(DB_DIR, "portfolio.db")
+logging.info(f"Database path set to: {DB_PATH}")
+
+def init_db():
+    conn = None  # Initialize conn to None to avoid UnboundLocalError
+    try:
+        # Check if the directory is writable
+        if not os.access(DB_DIR, os.W_OK):
+            raise Exception(f"Directory {DB_DIR} is not writable")
+        
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        # Create reviews table if it doesn't exist
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS reviews (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                rating INTEGER NOT NULL,
+                description TEXT NOT NULL
+            )
+        ''')
+        conn.commit()
+        logging.info("SQLite database and reviews table initialized successfully.")
+    except Exception as e:
+        logging.error(f"Error initializing database: {str(e)}")
+        raise  # Re-raise the exception for debugging on Hugging Face Spaces
+    finally:
+        if conn:  # Only close if conn was successfully created
+            conn.close()
+
+# Initialize the database when the app starts
+init_db()
 
 # Data for API endpoints
 skills_data = [
@@ -78,9 +119,6 @@ hobbies_data = [
         "description": "Creating digital artwork and experimenting with UI/UX design."
     }
 ]
-
-# In-memory storage for reviews (for "Educating Others" hobby)
-reviews_data = []
 
 projects_data = [
     {
@@ -158,7 +196,9 @@ def get_hobbies():
 
 @app.route('/api/reviews', methods=['GET', 'POST'])
 def handle_reviews():
-    global reviews_data
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    
     if request.method == 'POST':
         try:
             data = request.get_json()
@@ -169,19 +209,63 @@ def handle_reviews():
                 return jsonify({"error": "Rating must be between 1 and 5"}), 400
             description = data['description']
             name = data['name']
-            review = {"name": name, "rating": rating, "description": description}
-            reviews_data.append(review)
-            logging.info(f"New review added: {review}")
+            
+            # Insert the review into the database
+            cursor.execute(
+                "INSERT INTO reviews (name, rating, description) VALUES (?, ?, ?)",
+                (name, rating, description)
+            )
+            conn.commit()
+            logging.info(f"New review added: {name}, {rating}, {description}")
             return jsonify({"message": "Review submitted successfully!"})
         except Exception as e:
+            conn.rollback()
             logging.error(f"Error in /api/reviews POST: {str(e)}")
             return jsonify({"error": "Internal server error"}), 500
+        finally:
+            conn.close()
     else:  # GET request
         try:
-            return jsonify(reviews_data)
+            cursor.execute("SELECT id, name, rating, description FROM reviews")
+            reviews = [{"id": row[0], "name": row[1], "rating": row[2], "description": row[3]} for row in cursor.fetchall()]
+            return jsonify(reviews)
         except Exception as e:
             logging.error(f"Error in /api/reviews GET: {str(e)}")
             return jsonify({"error": "Internal server error"}), 500
+        finally:
+            conn.close()
+
+@app.route('/api/reviews/delete/<int:id>', methods=['DELETE'])
+def delete_review(id):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    try:
+        # Check for admin password in the request body
+        data = request.get_json()
+        if not data or 'password' not in data:
+            return jsonify({"error": "Password is required"}), 400
+
+        password = data['password']
+        if password != ADMIN_PASSWORD:
+            return jsonify({"error": "Invalid password"}), 403
+
+        # Check if the review exists
+        cursor.execute("SELECT name FROM reviews WHERE id = ?", (id,))
+        review = cursor.fetchone()
+        if not review:
+            return jsonify({"error": "Review not found"}), 404
+        
+        # Delete the review
+        cursor.execute("DELETE FROM reviews WHERE id = ?", (id,))
+        conn.commit()
+        logging.info(f"Review deleted with id {id}: {review[0]}")
+        return jsonify({"message": f"Review by {review[0]} deleted successfully!"})
+    except Exception as e:
+        conn.rollback()
+        logging.error(f"Error in /api/reviews/delete/{id}: {str(e)}")
+        return jsonify({"error": "Internal server error"}), 500
+    finally:
+        conn.close()
 
 @app.route('/api/projects')
 def get_projects():
