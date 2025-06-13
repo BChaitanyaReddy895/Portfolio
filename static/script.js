@@ -341,19 +341,55 @@ fetchData('/api/hobbies', 'hobbies-grid', (data, container) => {
             }
             reviews.forEach(review => {
               const reviewDiv = document.createElement('div');
-              reviewDiv.className = 'glassmorphic p-4 rounded-xl';
+              reviewDiv.className = 'glassmorphic p-4 rounded-xl flex justify-between items-start';
               reviewDiv.innerHTML = `
-                <div class="flex items-center mb-2">
-                  <span class="font-orbitron text-primary-blue glow mr-2">${review.name}</span>
-                  <div class="text-primary-blue flex">
-                    ${'<i class="fas fa-star glow"></i>'.repeat(review.rating)}
-                    ${'<i class="far fa-star text-gray-400"></i>'.repeat(5 - review.rating)}
+                <div>
+                  <div class="flex items-center mb-2">
+                    <span class="font-orbitron text-primary-blue glow mr-2">${review.name}</span>
+                    <div class="text-primary-blue flex">
+                      ${'<i class="fas fa-star glow"></i>'.repeat(review.rating)}
+                      ${'<i class="far fa-star text-gray-400"></i>'.repeat(5 - review.rating)}
+                    </div>
                   </div>
+                  <p class="text-gray-300 text-sm">${review.description}</p>
                 </div>
-                <p class="text-gray-300 text-sm">${review.description}</p>
+                <button class="delete-review text-red-500 hover:text-red-700 glow" data-id="${review.id}">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
               `;
               reviewsContainer.appendChild(reviewDiv);
               gsap.from(reviewDiv, { opacity: 0, y: 20, duration: 0.8, ease: 'power3.out' });
+
+              // Add event listener for delete button
+              reviewDiv.querySelector('.delete-review').addEventListener('click', () => {
+                const confirmDelete = confirm(`Are you sure you want to delete the review by ${review.name}?`);
+                if (confirmDelete) {
+                  const password = prompt('Please enter the admin password to delete this review:');
+                  if (!password) {
+                    alert('Password is required to delete a review.');
+                    return;
+                  }
+
+                  fetch(`/api/reviews/delete/${review.id}`, {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password })
+                  })
+                  .then(response => response.json())
+                  .then(data => {
+                    if (data.message) {
+                      alert(data.message);
+                      fetchReviews(reviewsContainer); // Refresh reviews
+                    } else {
+                      alert('Error deleting review: ' + (data.error || 'Unknown error'));
+                    }
+                  })
+                  .catch(error => {
+                    console.error('Error deleting review:', error);
+                    alert('Error deleting review. Please try again later.');
+                  });
+                }
+              });
             });
           })
           .catch(error => {
