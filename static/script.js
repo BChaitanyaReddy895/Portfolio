@@ -1,4 +1,3 @@
-// Initialize immediately to reduce delay
 console.log("Script.js started executing at:", new Date().toISOString());
 
 // Initialize Particles.js
@@ -218,7 +217,7 @@ fetchData('/api/achievements', 'achievements-grid', (data, container) => {
   });
 });
 
-// Render Hobbies
+// Render Hobbies with Review Form for "Educating Others"
 fetchData('/api/hobbies', 'hobbies-grid', (data, container) => {
   data.forEach(hobby => {
     const card = document.createElement('div');
@@ -236,9 +235,136 @@ fetchData('/api/hobbies', 'hobbies-grid', (data, container) => {
         </div>
       </div>
     `;
+    // Add review form and testimonials for "Educating Others"
+    if (hobby.title === "Educating Others") {
+      card.innerHTML += `
+        <div class="mt-6">
+          <h4 class="text-md font-orbitron text-primary-blue glow mb-4">Share Your Feedback</h4>
+          <div class="glassmorphic p-6 rounded-xl space-y-4">
+            <div>
+              <label class="block text-sm text-gray-300 mb-2">Your Name</label>
+              <input type="text" id="review-name" class="w-full p-3 rounded-md bg-transparent border border-gray-600 text-gray-100 focus:border-primary-blue focus:glow" placeholder="Enter your name">
+            </div>
+            <div>
+              <label class="block text-sm text-gray-300 mb-2">Rating</label>
+              <div id="star-rating" class="text-2xl text-gray-400 flex space-x-1">
+                <span class="star cursor-pointer" data-value="1"><i class="far fa-star"></i></span>
+                <span class="star cursor-pointer" data-value="2"><i class="far fa-star"></i></span>
+                <span class="star cursor-pointer" data-value="3"><i class="far fa-star"></i></span>
+                <span class="star cursor-pointer" data-value="4"><i class="far fa-star"></i></span>
+                <span class="star cursor-pointer" data-value="5"><i class="far fa-star"></i></span>
+              </div>
+              <input type="hidden" id="review-rating" value="0">
+            </div>
+            <div>
+              <label class="block text-sm text-gray-300 mb-2">Your Experience</label>
+              <textarea id="review-description" class="w-full p-3 rounded-md bg-transparent border border-gray-600 text-gray-100 focus:border-primary-blue focus:glow" placeholder="Describe your learning experience..." rows="4"></textarea>
+            </div>
+            <button id="submit-review" class="btn btn-primary ripple w-full">Submit Feedback</button>
+          </div>
+          <div class="mt-6">
+            <h4 class="text-md font-orbitron text-primary-blue glow mb-4">Testimonials</h4>
+            <div id="reviews-container" class="space-y-4"></div>
+          </div>
+        </div>
+      `;
+    }
     container.appendChild(card);
     VanillaTilt.init(card);
     gsap.from(card, { scrollTrigger: { trigger: card, start: 'top 80%' }, y: 50, opacity: 0, duration: 1, ease: 'power3.out' });
+
+    // Star Rating Logic (only if the review form exists)
+    if (hobby.title === "Educating Others") {
+      const stars = card.querySelectorAll('.star');
+      const ratingInput = card.querySelector('#review-rating');
+      stars.forEach(star => {
+        star.addEventListener('click', () => {
+          const rating = star.getAttribute('data-value');
+          ratingInput.value = rating;
+          stars.forEach(s => {
+            const value = s.getAttribute('data-value');
+            if (value <= rating) {
+              s.innerHTML = '<i class="fas fa-star text-primary-blue glow"></i>';
+            } else {
+              s.innerHTML = '<i class="far fa-star text-gray-400"></i>';
+            }
+          });
+        });
+      });
+
+      // Submit Review
+      card.querySelector('#submit-review').addEventListener('click', () => {
+        const name = card.querySelector('#review-name').value.trim();
+        const rating = parseInt(card.querySelector('#review-rating').value);
+        const description = card.querySelector('#review-description').value.trim();
+
+        if (!name || rating === 0 || !description) {
+          alert('Please fill out all fields and select a rating.');
+          return;
+        }
+
+        fetch('/api/reviews', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, rating, description })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.message) {
+            alert('Thank you for your feedback!');
+            // Clear form
+            card.querySelector('#review-name').value = '';
+            card.querySelector('#review-description').value = '';
+            card.querySelector('#review-rating').value = '0';
+            stars.forEach(star => star.innerHTML = '<i class="far fa-star text-gray-400"></i>');
+            // Refresh reviews
+            fetchReviews(card.querySelector('#reviews-container'));
+          } else {
+            alert('Error submitting feedback: ' + (data.error || 'Unknown error'));
+          }
+        })
+        .catch(error => {
+          console.error('Error submitting review:', error);
+          alert('Error submitting feedback. Please try again later.');
+        });
+      });
+
+      // Fetch and Display Reviews
+      function fetchReviews(reviewsContainer) {
+        fetch('/api/reviews')
+          .then(response => response.json())
+          .then(reviews => {
+            reviewsContainer.innerHTML = '';
+            if (reviews.length === 0) {
+              reviewsContainer.innerHTML = '<p class="text-gray-400">No testimonials yet. Be the first to share your experience!</p>';
+              return;
+            }
+            reviews.forEach(review => {
+              const reviewDiv = document.createElement('div');
+              reviewDiv.className = 'glassmorphic p-4 rounded-xl';
+              reviewDiv.innerHTML = `
+                <div class="flex items-center mb-2">
+                  <span class="font-orbitron text-primary-blue glow mr-2">${review.name}</span>
+                  <div class="text-primary-blue flex">
+                    ${'<i class="fas fa-star glow"></i>'.repeat(review.rating)}
+                    ${'<i class="far fa-star text-gray-400"></i>'.repeat(5 - review.rating)}
+                  </div>
+                </div>
+                <p class="text-gray-300 text-sm">${review.description}</p>
+              `;
+              reviewsContainer.appendChild(reviewDiv);
+              gsap.from(reviewDiv, { opacity: 0, y: 20, duration: 0.8, ease: 'power3.out' });
+            });
+          })
+          .catch(error => {
+            console.error('Error fetching reviews:', error);
+            reviewsContainer.innerHTML = '<p class="text-red-500">Error loading testimonials. Please try again later.</p>';
+          });
+      }
+
+      // Initial fetch of reviews
+      fetchReviews(card.querySelector('#reviews-container'));
+    }
   });
 });
 
