@@ -3,7 +3,7 @@ import logging
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-import sqlite3
+import psycopg2
 import os
 
 app = Flask(__name__)
@@ -17,39 +17,42 @@ EMAIL_PASSWORD = "einf clqk oyds ucuj"
 RECIPIENT_EMAIL = "chaituchaithanyareddy895@gmail.com"
 
 # Admin password for delete functionality (replace with a secure password)
-ADMIN_PASSWORD = "securepassword123"  # Change this to a strong password
+ADMIN_PASSWORD = "Chaitu895@"  # Change this to a strong password
 
-# SQLite database setup
-# Use /tmp for Hugging Face Spaces, fallback to current directory if writable
-DB_DIR = "/tmp" if os.access("/tmp", os.W_OK) else os.getcwd()
-DB_PATH = os.path.join(DB_DIR, "portfolio.db")
-logging.info(f"Database path set to: {DB_PATH}")
+# PostgreSQL database setup (replace with your Render PostgreSQL credentials)
+DB_HOST = os.getenv("DB_HOST", "dpg-d160vaodl3ps7389dl3g-a")
+DB_PORT = os.getenv("DB_PORT", "5432")
+DB_USER = os.getenv("DB_USER", "portfolio_db_5m30_user")
+DB_PASSWORD = os.getenv("DB_PASSWORD", "DvwW2lHP30ixxnl2190U88W569QFYjWB")
+DB_NAME = os.getenv("DB_NAME", "portfolio_db_5m30")
 
 def init_db():
-    conn = None  # Initialize conn to None to avoid UnboundLocalError
+    conn = None
     try:
-        # Check if the directory is writable
-        if not os.access(DB_DIR, os.W_OK):
-            raise Exception(f"Directory {DB_DIR} is not writable")
-        
-        conn = sqlite3.connect(DB_PATH)
+        conn = psycopg2.connect(
+            host=DB_HOST,
+            port=DB_PORT,
+            user=DB_USER,
+            password=DB_PASSWORD,
+            database=DB_NAME
+        )
         cursor = conn.cursor()
         # Create reviews table if it doesn't exist
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS reviews (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                id SERIAL PRIMARY KEY,
                 name TEXT NOT NULL,
                 rating INTEGER NOT NULL,
                 description TEXT NOT NULL
             )
         ''')
         conn.commit()
-        logging.info("SQLite database and reviews table initialized successfully.")
+        logging.info("PostgreSQL database and reviews table initialized successfully.")
     except Exception as e:
         logging.error(f"Error initializing database: {str(e)}")
-        raise  # Re-raise the exception for debugging on Hugging Face Spaces
+        raise
     finally:
-        if conn:  # Only close if conn was successfully created
+        if conn:
             conn.close()
 
 # Initialize the database when the app starts
@@ -196,7 +199,13 @@ def get_hobbies():
 
 @app.route('/api/reviews', methods=['GET', 'POST'])
 def handle_reviews():
-    conn = sqlite3.connect(DB_PATH)
+    conn = psycopg2.connect(
+        host=DB_HOST,
+        port=DB_PORT,
+        user=DB_USER,
+        password=DB_PASSWORD,
+        database=DB_NAME
+    )
     cursor = conn.cursor()
     
     if request.method == 'POST':
@@ -212,7 +221,7 @@ def handle_reviews():
             
             # Insert the review into the database
             cursor.execute(
-                "INSERT INTO reviews (name, rating, description) VALUES (?, ?, ?)",
+                "INSERT INTO reviews (name, rating, description) VALUES (%s, %s, %s) RETURNING id",
                 (name, rating, description)
             )
             conn.commit()
@@ -237,7 +246,13 @@ def handle_reviews():
 
 @app.route('/api/reviews/delete/<int:id>', methods=['DELETE'])
 def delete_review(id):
-    conn = sqlite3.connect(DB_PATH)
+    conn = psycopg2.connect(
+        host=DB_HOST,
+        port=DB_PORT,
+        user=DB_USER,
+        password=DB_PASSWORD,
+        database=DB_NAME
+    )
     cursor = conn.cursor()
     try:
         # Check for admin password in the request body
@@ -250,13 +265,13 @@ def delete_review(id):
             return jsonify({"error": "Invalid password"}), 403
 
         # Check if the review exists
-        cursor.execute("SELECT name FROM reviews WHERE id = ?", (id,))
+        cursor.execute("SELECT name FROM reviews WHERE id = %s", (id,))
         review = cursor.fetchone()
         if not review:
             return jsonify({"error": "Review not found"}), 404
         
         # Delete the review
-        cursor.execute("DELETE FROM reviews WHERE id = ?", (id,))
+        cursor.execute("DELETE FROM reviews WHERE id = %s", (id,))
         conn.commit()
         logging.info(f"Review deleted with id {id}: {review[0]}")
         return jsonify({"message": f"Review by {review[0]} deleted successfully!"})
