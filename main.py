@@ -37,13 +37,14 @@ def init_db():
             database=DB_NAME
         )
         cursor = conn.cursor()
-        # Create reviews table if it doesn't exist
+        # Create reviews table if it doesn't exist, with position column
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS reviews (
                 id SERIAL PRIMARY KEY,
                 name TEXT NOT NULL,
                 rating INTEGER NOT NULL,
-                description TEXT NOT NULL
+                description TEXT NOT NULL,
+                position INTEGER DEFAULT 0
             )
         ''')
         conn.commit()
@@ -139,6 +140,14 @@ projects_data = [
         "technologies": ["Python", "NLP", "HTML", "CSS", "JavaScript"],
         "githubLink": "https://github.com/BChaitanyaReddy895/Bengali_English_translator",
         "liveLink": "https://chaitanya895-bangla-translator.hf.space"
+    },
+    {
+        "title": "SkillSync",
+        "description": "A Flask-based web platform for matching interns with internships, featuring recruiter dashboards, applicant tracking, and skill-based resume matching.",
+        "image": "/static/images/SkillSync.png",
+        "technologies": ["Python", "Flask", "SQLite", "Pandas", "NLTK", "HTML", "CSS", "JavaScript", "Gunicorn", "Werkzeug"],
+        "githubLink": "https://github.com/BChaitanyaReddy895/SkillSync",
+        "liveLink": "https://chaitanya895-skillsync.hf.space"
     }
 ]
 
@@ -153,6 +162,23 @@ education_data = [
             "Developed Bangla to English translation model for industrial use",
             "Participated in Entellika Sparc AI Hackathon and IIT Jammu UI/UX Challenge"
         ]
+    }
+]
+
+certifications_data = [
+    {
+        "title": "Certified AI Practitioner",
+        "organization": "Hugging Face",
+        "date": "June 2025",
+        "description": "Completed a comprehensive course on AI fundamentals, including LLMs and AI agents.",
+        "certificateLink": "https://huggingface.co/certificates/your-certificate-id"  # Replace with actual link if available
+    },
+    {
+        "title": "Python for Data Science",
+        "organization": "Coursera",
+        "date": "March 2024",
+        "description": "Learned advanced Python techniques for data analysis and visualization.",
+        "certificateLink": "https://coursera.org/certificates/your-certificate-id"  # Replace with actual link
     }
 ]
 
@@ -218,14 +244,16 @@ def handle_reviews():
                 return jsonify({"error": "Rating must be between 1 and 5"}), 400
             description = data['description']
             name = data['name']
+            # Optional: Allow position to be specified in the request, default to 0
+            position = int(data.get('position', 0))
             
-            # Insert the review into the database
+            # Insert the review into the database with the position
             cursor.execute(
-                "INSERT INTO reviews (name, rating, description) VALUES (%s, %s, %s) RETURNING id",
-                (name, rating, description)
+                "INSERT INTO reviews (name, rating, description, position) VALUES (%s, %s, %s, %s) RETURNING id",
+                (name, rating, description, position)
             )
             conn.commit()
-            logging.info(f"New review added: {name}, {rating}, {description}")
+            logging.info(f"New review added: {name}, {rating}, {description}, position: {position}")
             return jsonify({"message": "Review submitted successfully!"})
         except Exception as e:
             conn.rollback()
@@ -235,14 +263,58 @@ def handle_reviews():
             conn.close()
     else:  # GET request
         try:
-            cursor.execute("SELECT id, name, rating, description FROM reviews")
-            reviews = [{"id": row[0], "name": row[1], "rating": row[2], "description": row[3]} for row in cursor.fetchall()]
+            # Sort by position (ascending), then by id (ascending) as a tiebreaker
+            cursor.execute("SELECT id, name, rating, description, position FROM reviews ORDER BY position ASC, id ASC")
+            reviews = [{"id": row[0], "name": row[1], "rating": row[2], "description": row[3], "position": row[4]} for row in cursor.fetchall()]
             return jsonify(reviews)
         except Exception as e:
             logging.error(f"Error in /api/reviews GET: {str(e)}")
             return jsonify({"error": "Internal server error"}), 500
         finally:
             conn.close()
+
+@app.route('/api/reviews/update_position/<int:id>', methods=['PATCH'])
+def update_review_position(id):
+    conn = psycopg2.connect(
+        host=DB_HOST,
+        port=DB_PORT,
+        user=DB_USER,
+        password=DB_PASSWORD,
+        database=DB_NAME
+    )
+    cursor = conn.cursor()
+    try:
+        # Check for admin password in the request body
+        data = request.get_json()
+        if not data or 'password' not in data:
+            return jsonify({"error": "Password is required"}), 400
+
+        password = data['password']
+        if password != ADMIN_PASSWORD:
+            return jsonify({"error": "Invalid password"}), 403
+
+        if 'position' not in data:
+            return jsonify({"error": "Position is required"}), 400
+
+        position = int(data['position'])
+
+        # Check if the review exists
+        cursor.execute("SELECT name FROM reviews WHERE id = %s", (id,))
+        review = cursor.fetchone()
+        if not review:
+            return jsonify({"error": "Review not found"}), 404
+        
+        # Update the position of the review
+        cursor.execute("UPDATE reviews SET position = %s WHERE id = %s", (position, id))
+        conn.commit()
+        logging.info(f"Review position updated for id {id}: {review[0]}, new position: {position}")
+        return jsonify({"message": f"Position updated for review by {review[0]}"})
+    except Exception as e:
+        conn.rollback()
+        logging.error(f"Error in /api/reviews/update_position/{id}: {str(e)}")
+        return jsonify({"error": "Internal server error"}), 500
+    finally:
+        conn.close()
 
 @app.route('/api/reviews/delete/<int:id>', methods=['DELETE'])
 def delete_review(id):
@@ -296,6 +368,14 @@ def get_education():
         return jsonify(education_data)
     except Exception as e:
         logging.error(f"Error in /api/education: {str(e)}")
+        return jsonify({"error": "Internal server error"}), 500
+
+@app.route('/api/certifications')
+def get_certifications():
+    try:
+        return jsonify(certifications_data)
+    except Exception as e:
+        logging.error(f"Error in /api/certifications: {str(e)}")
         return jsonify({"error": "Internal server error"}), 500
 
 @app.route('/api/contact', methods=['POST'])
