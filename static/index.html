@@ -10,13 +10,13 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Lexend:wght@300;400;600&display=swap">
-  <link rel="stylesheet" href="static\style.css">
-  <link rel="icon" type="image/jpg" href="static\images\favicon.jpg">
+  <link rel="stylesheet" href="static/style.css">
+  <link rel="icon" type="image/jpg" href="static/images/favicon.jpg">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
-  <script defer src="static\script.js"></script>
+  <script defer src="static/script.js"></script>
 </head>
 <body class="bg-gray-900 text-gray-100 font-lexend relative overflow-x-hidden">
   <!-- Particle Background -->
@@ -28,39 +28,39 @@
   <!-- Navigation Bar -->
   <nav id="navbar" class="fixed top-0 left-0 w-full glassmorphic z-50">
     <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-      <a href="#home" class="text-2xl font-orbitron text-primary-blue glow">BCR</a>
-      <div class="hidden md:flex space-x-6">
-        <a href="#home" class="nav-link text-primary-blue hover:text-primary-blue glow">Home</a>
-        <a href="#about" class="nav-link text-primary-blue hover:text-primary-blue glow">About</a>
-        <a href="#skills" class="nav-link text-primary-blue hover:text-primary-blue glow">Skills</a>
-        <a href="#achievements" class="nav-link text-primary-blue hover:text-primary-blue glow">Achievements</a>
-        <a href="#hobbies" class="nav-link text-primary-blue hover:text-primary-blue glow">Hobbies</a>
-        <a href="#projects" class="nav-link text-primary-blue hover:text-primary-blue glow">Projects</a>
-        <a href="#education" class="nav-link text-primary-blue hover:text-primary-blue glow">Education</a>
-        <a href="#resume" class="nav-link text-primary-blue hover:text-primary-blue glow">Resume</a>
-        <a href="#contact" class="nav-link text-primary-blue hover:text-primary-blue glow">Contact</a>
+      <a href="#home" class="text-xl sm:text-2xl font-orbitron text-primary-blue glow">BCR</a>
+      <div class="hidden md:flex space-x-4 lg:space-x-6">
+        <a href="#home" class="nav-link text-sm sm:text-base text-primary-blue hover:text-primary-blue glow">Home</a>
+        <a href="#about" class="nav-link text-sm sm:text-base text-primary-blue hover:text-primary-blue glow">About</a>
+        <a href="#skills" class="nav-link text-sm sm:text-base text-primary-blue hover:text-primary-blue glow">Skills</a>
+        <a href="#achievements" class="nav-link text-sm sm:text-base text-primary-blue hover:text-primary-blue glow">Achievements</a>
+        <a href="#hobbies" class="nav-link text-sm sm:text-base text-primary-blue hover:text-primary-blue glow">Hobbies</a>
+        <a href="#projects" class="nav-link text-sm sm:text-base text-primary-blue hover:text-primary-blue glow">Projects</a>
+        <a href="#education" class="nav-link text-sm sm:text-base text-primary-blue hover:text-primary-blue glow">Education</a>
+        <a href="#resume" class="nav-link text-sm sm:text-base text-primary-blue hover:text-primary-blue glow">Resume</a>
+        <a href="#contact" class="nav-link text-sm sm:text-base text-primary-blue hover:text-primary-blue glow">Contact</a>
       </div>
-      <div class="flex items-center space-x-4">
-        <button id="theme-toggle" class="text-primary-blue hover:text-primary-blue glow" aria-label="Toggle dark mode">
+      <div class="flex items-center space-x-3">
+        <button id="theme-toggle" class="text-primary-blue hover:text-primary-blue glow text-lg sm:text-xl" aria-label="Toggle dark mode">
           <i class="fas fa-moon"></i>
         </button>
-        <button id="menu-toggle" class="md:hidden text-primary-blue" aria-label="Toggle menu">
+        <button id="menu-toggle" class="md:hidden text-primary-blue text-lg sm:text-xl" aria-label="Toggle menu">
           <i class="fas fa-bars"></i>
         </button>
       </div>
     </div>
     <!-- Mobile Menu -->
     <div id="mobile-menu" class="hidden md:hidden glassmorphic">
-      <div class="container mx-auto px-4 py-4 flex flex-col space-y-4">
-        <a href="#home" class="nav-link text-primary-blue hover:text-primary-blue glow">Home</a>
-        <a href="#about" class="nav-link text-primary-blue hover:text-primary-blue glow">About</a>
-        <a href="#skills" class="nav-link text-primary-blue hover:text-primary-blue glow">Skills</a>
-        <a href="#achievements" class="nav-link text-primary-blue hover:text-primary-blue glow">Achievements</a>
-        <a href="#hobbies" class="nav-link text-primary-blue hover:text-primary-blue glow">Hobbies</a>
-        <a href="#projects" class="nav-link text-primary-blue hover:text-primary-blue glow">Projects</a>
-        <a href="#education" class="nav-link text-primary-blue hover:text-primary-blue glow">Education</a>
-        <a href="#resume" class="nav-link text-primary-blue hover:text-primary-blue glow">Resume</a>
-        <a href="#contact" class="nav-link text-primary-blue hover:text-primary-blue glow">Contact</a>
+      <div class="container mx-auto px-4 py-4 flex flex-col space-y-3">
+        <a href="#home" class="nav-link text-base text-primary-blue hover:text-primary-blue glow">Home</a>
+        <a href="#about" class="nav-link text-base text-primary-blue hover:text-primary-blue glow">About</a>
+        <a href="#skills" class="nav-link text-base text-primary-blue hover:text-primary-blue glow">Skills</a>
+        <a href="#achievements" class="nav-link text-base text-primary-blue hover:text-primary-blue glow">Achievements</a>
+        <a href="#hobbies" class="nav-link text-base text-primary-blue hover:text-primary-blue glow">Hobbies</a>
+        <a href="#projects" class="nav-link text-base text-primary-blue hover:text-primary-blue glow">Projects</a>
+        <a href="#education" class="nav-link text-base text-primary-blue hover:text-primary-blue glow">Education</a>
+        <a href="#resume" class="nav-link text-base text-primary-blue hover:text-primary-blue glow">Resume</a>
+        <a href="#contact" class="nav-link text-base text-primary-blue hover:text-primary-blue glow">Contact</a>
       </div>
     </div>
   </nav>
@@ -69,60 +69,60 @@
   <section id="home" class="min-h-screen flex items-center relative z-10 pt-20">
     <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
       <div class="md:w-1/2 text-center md:text-left animate-slide-in">
-        <h1 class="text-4xl md:text-6xl font-orbitron text-primary-blue glow mb-4">Hi, I'm <span class="text-primary-blue">B Chaitanya Reddy</span></h1>
-        <p id="typing-text" class="text-xl md:text-2xl text-gray-300 mb-6">Python Developer | Machine Learning Enthusiast | AI Innovator</p>
-        <div class="flex justify-center md:justify-start space-x-4">
-          <a href="#projects" class="btn btn-primary ripple">View My Work <i class="fas fa-arrow-right ml-2"></i></a>
-          <a href="#contact" class="btn btn-secondary ripple">Contact Me</a>
+        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-orbitron text-primary-blue glow mb-4">Hi, I'm <span class="text-primary-blue">B Chaitanya Reddy</span></h1>
+        <p id="typing-text" class="text-lg sm:text-xl md:text-2xl text-gray-300 mb-6">Python Developer | Machine Learning Enthusiast | AI Innovator</p>
+        <div class="flex flex-col sm:flex-row justify-center md:justify-start space-y-3 sm:space-y-0 sm:space-x-4">
+          <a href="#projects" class="btn btn-primary ripple text-sm sm:text-base py-2 sm:py-3 px-4 sm:px-6">View My Work <i class="fas fa-arrow-right ml-2"></i></a>
+          <a href="#contact" class="btn btn-secondary ripple text-sm sm:text-base py-2 sm:py-3 px-4 sm:px-6">Contact Me</a>
         </div>
       </div>
       <div class="md:w-1/2 mt-8 md:mt-0" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-perspective="1000">
-        <img src="static\images\myphoto.jpg" alt="B Chaitanya Reddy" class="rounded-full w-64 h-64 mx-auto object-cover glassmorphic glow animate-fade-in">
+        <img src="static/images/myphoto.jpg" alt="B Chaitanya Reddy" class="rounded-full w-48 sm:w-64 h-48 sm:h-64 mx-auto object-cover glassmorphic glow animate-fade-in">
       </div>
     </div>
   </section>
 
   <!-- About Section -->
-  <section id="about" class="py-20 relative z-10">
+  <section id="about" class="py-12 sm:py-20 relative z-10">
     <div class="container mx-auto px-4">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl md:text-4xl font-orbitron text-primary-blue glow">About Me</h2>
+      <div class="text-center mb-8 sm:mb-12">
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-orbitron text-primary-blue glow">About Me</h2>
         <div class="underline"></div>
       </div>
-      <div class="flex flex-col md:flex-row gap-12">
-        <div class="md:w-1/2 glassmorphic p-8 rounded-xl">
-          <p class="text-lg text-gray-300 leading-relaxed">I'm a passionate fresher pursuing Computer Science and Engineering at REVA University. With a strong foundation in Python, Machine Learning, and NLP, I'm eager to create impactful solutions and grow as a professional in AI and software development.</p>
-          <div class="mt-6 space-y-4">
-            <div class="flex items-center gap-3 text-primary-blue">
-              <i class="fas fa-user"></i>
+      <div class="flex flex-col md:flex-row gap-8 sm:gap-12">
+        <div class="md:w-1/2 glassmorphic p-6 sm:p-8 rounded-xl">
+          <p class="text-base sm:text-lg text-gray-300 leading-relaxed">I'm a passionate fresher pursuing Computer Science and Engineering at REVA University. With a strong foundation in Python, Machine Learning, and NLP, I'm eager to create impactful solutions and grow as a professional in AI and software development.</p>
+          <div class="mt-4 sm:mt-6 space-y-3 sm:space-y-4">
+            <div class="flex items-center gap-2 sm:gap-3 text-primary-blue text-sm sm:text-base">
+              <i class="fas fa-user text-lg sm:text-xl"></i>
               <span>Computer Science Student</span>
             </div>
-            <div class="flex items-center gap-3 text-primary-blue">
-              <i class="fas fa-map-pin"></i>
+            <div class="flex items-center gap-2 sm:gap-3 text-primary-blue text-sm sm:text-base">
+              <i class="fas fa-map-pin text-lg sm:text-xl"></i>
               <span>Bangalore, India</span>
             </div>
-            <div class="flex items-center gap-3 text-primary-blue">
-              <i class="fas fa-briefcase"></i>
+            <div class="flex items-center gap-2 sm:gap-3 text-primary-blue text-sm sm:text-base">
+              <i class="fas fa-briefcase text-lg sm:text-xl"></i>
               <span>Open to Opportunities</span>
             </div>
           </div>
         </div>
-        <div class="md:w-1/2 grid grid-cols-2 gap-4">
-          <div class="stat-card glassmorphic p-6 rounded-xl text-center hover:scale-105 transition-transform">
-            <h3 class="text-3xl font-orbitron text-primary-blue glow">3+</h3>
-            <p class="text-gray-300">Academic Projects</p>
+        <div class="md:w-1/2 grid grid-cols-2 gap-4 sm:gap-6">
+          <div class="stat-card glassmorphic p-4 sm:p-6 rounded-xl text-center hover:scale-105 transition-transform">
+            <h3 class="text-2xl sm:text-3xl font-orbitron text-primary-blue glow">3+</h3>
+            <p class="text-gray-300 text-sm sm:text-base">Academic Projects</p>
           </div>
-          <div class="stat-card glassmorphic p-6 rounded-xl text-center hover:scale-105 transition-transform">
-            <h3 class="text-3xl font-orbitron text-primary-blue glow">5+</h3>
-            <p class="text-gray-300">Certifications</p>
+          <div class="stat-card glassmorphic p-4 sm:p-6 rounded-xl text-center hover:scale-105 transition-transform">
+            <h3 class="text-2xl sm:text-3xl font-orbitron text-primary-blue glow">5+</h3>
+            <p class="text-gray-300 text-sm sm:text-base">Certifications</p>
           </div>
-          <div class="stat-card glassmorphic p-6 rounded-xl text-center hover:scale-105 transition-transform">
-            <h3 class="text-3xl font-orbitron text-primary-blue glow">5+</h3>
-            <p class="text-gray-300">Skills</p>
+          <div class="stat-card glassmorphic p-4 sm:p-6 rounded-xl text-center hover:scale-105 transition-transform">
+            <h3 class="text-2xl sm:text-3xl font-orbitron text-primary-blue glow">5+</h3>
+            <p class="text-gray-300 text-sm sm:text-base">Skills</p>
           </div>
-          <div class="stat-card glassmorphic p-6 rounded-xl text-center hover:scale-105 transition-transform">
-            <h3 class="text-3xl font-orbitron text-primary-blue glow">2+</h3>
-            <p class="text-gray-300">Internships</p>
+          <div class="stat-card glassmorphic p-4 sm:p-6 rounded-xl text-center hover:scale-105 transition-transform">
+            <h3 class="text-2xl sm:text-3xl font-orbitron text-primary-blue glow">2+</h3>
+            <p class="text-gray-300 text-sm sm:text-base">Internships</p>
           </div>
         </div>
       </div>
@@ -130,132 +130,132 @@
   </section>
 
   <!-- Skills Section -->
-  <section id="skills" class="py-20 relative z-10">
+  <section id="skills" class="py-12 sm:py-20 relative z-10">
     <div class="container mx-auto px-4">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl md:text-4xl font-orbitron text-primary-blue glow">Technical Skills</h2>
+      <div class="text-center mb-8 sm:mb-12">
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-orbitron text-primary-blue glow">Technical Skills</h2>
         <div class="underline"></div>
       </div>
-      <div id="skills-grid" class="flex overflow-x-auto space-x-10 pb-4"></div>
+      <div id="skills-grid" class="flex overflow-x-auto space-x-6 sm:space-x-10 pb-4"></div>
     </div>
   </section>
 
   <!-- Achievements Section -->
-  <section id="achievements" class="py-20 relative z-10">
+  <section id="achievements" class="py-12 sm:py-20 relative z-10">
     <div class="container mx-auto px-4">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl md:text-4xl font-orbitron text-primary-blue glow">Achievements</h2>
+      <div class="text-center mb-8 sm:mb-12">
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-orbitron text-primary-blue glow">Achievements</h2>
         <div class="underline"></div>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="achievements-grid"></div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8" id="achievements-grid"></div>
     </div>
   </section>
 
   <!-- Hobbies Section -->
-  <section id="hobbies" class="py-20 relative z-10">
+  <section id="hobbies" class="py-12 sm:py-20 relative z-10">
     <div class="container mx-auto px-4">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl md:text-4xl font-orbitron text-primary-blue glow">Hobbies & Interests</h2>
+      <div class="text-center mb-8 sm:mb-12">
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-orbitron text-primary-blue glow">Hobbies & Interests</h2>
         <div class="underline"></div>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="hobbies-grid"></div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8" id="hobbies-grid"></div>
     </div>
   </section>
 
   <!-- Projects Section -->
-  <section id="projects" class="py-20 relative z-10">
+  <section id="projects" class="py-12 sm:py-20 relative z-10">
     <div class="container mx-auto px-4">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl md:text-4xl font-orbitron text-primary-blue glow">Featured Projects</h2>
+      <div class="text-center mb-8 sm:mb-12">
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-orbitron text-primary-blue glow">Featured Projects</h2>
         <div class="underline"></div>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="projects-grid"></div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8" id="projects-grid"></div>
     </div>
   </section>
 
   <!-- Education Section -->
-  <section id="education" class="py-20 relative z-10">
+  <section id="education" class="py-12 sm:py-20 relative z-10">
     <div class="container mx-auto px-4">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl md:text-4xl font-orbitron text-primary-blue glow">Education</h2>
+      <div class="text-center mb-8 sm:mb-12">
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-orbitron text-primary-blue glow">Education</h2>
         <div class="underline"></div>
       </div>
-      <div class="flex flex-col gap-12" id="education-grid"></div>
+      <div class="flex flex-col gap-8 sm:gap-12" id="education-grid"></div>
     </div>
   </section>
 
   <!-- Resume Section -->
-  <section id="resume" class="py-20 relative z-10">
+  <section id="resume" class="py-12 sm:py-20 relative z-10">
     <div class="container mx-auto px-4">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl md:text-4xl font-orbitron text-primary-blue glow">Resume</h2>
+      <div class="text-center mb-8 sm:mb-12">
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-orbitron text-primary-blue glow">Resume</h2>
         <div class="underline"></div>
       </div>
-      <div class="max-w-2xl mx-auto glassmorphic p-8 rounded-xl">
-        <h3 class="text-2xl font-orbitron text-primary-blue glow mb-4">Download My Resume</h3>
-        <p class="text-gray-300 mb-6">Get a detailed overview of my skills, education, and achievements.</p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="static\B Chaitanya Reddy Resume.pdf" download class="btn btn-primary ripple">
+      <div class="max-w-2xl mx-auto glassmorphic p-6 sm:p-8 rounded-xl">
+        <h3 class="text-xl sm:text-2xl font-orbitron text-primary-blue glow mb-4">Download My Resume</h3>
+        <p class="text-gray-300 mb-4 sm:mb-6 text-sm sm:text-base">Get a detailed overview of my skills, education, and achievements.</p>
+        <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+          <a href="static/B Chaitanya Reddy Resume.pdf" download class="btn btn-primary ripple text-sm sm:text-base py-2 sm:py-3 px-4 sm:px-6">
             <i class="fas fa-file-download mr-2"></i> Download PDF
           </a>
-          <a href="static\B Chaitanya Reddy Resume.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-secondary ripple">
+          <a href="static/B Chaitanya Reddy Resume.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-secondary ripple text-sm sm:text-base py-2 sm:py-3 px-4 sm:px-6">
             <i class="fas fa-eye mr-2"></i> View Online
           </a>
         </div>
-        <p class="mt-6 text-gray-400 text-sm">Last updated: <span id="last-updated-date">June 05, 2025</span></p>
+        <p class="mt-4 sm:mt-6 text-gray-400 text-xs sm:text-sm">Last updated: <span id="last-updated-date">June 05, 2025</span></p>
       </div>
     </div>
   </section>
 
   <!-- Contact Section -->
-  <section id="contact" class="py-20 relative z-10">
+  <section id="contact" class="py-12 sm:py-20 relative z-10">
     <div class="container mx-auto px-4">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl md:text-4xl font-orbitron text-primary-blue glow">Contact Me</h2>
-        <p class="text-gray-300 mt-4">Feel free to reach out for collaborations or just a friendly hello!</p>
+      <div class="text-center mb-8 sm:mb-12">
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-orbitron text-primary-blue glow">Contact Me</h2>
+        <p class="text-gray-300 mt-3 sm:mt-4 text-sm sm:text-base">Feel free to reach out for collaborations or just a friendly hello!</p>
       </div>
-      <div id="contact-form" class="max-w-2xl mx-auto space-y-6 glassmorphic p-8 rounded-xl">
-        <input type="email" id="email" name="email" placeholder="Your email" required class="w-full p-3 rounded-md bg-transparent border border-gray-600 text-gray-100 focus:border-primary-blue focus:glow">
-        <textarea id="message" name="message" placeholder="Your message" required rows="6" class="w-full p-3 rounded-md bg-transparent border border-gray-600 text-gray-100 focus:border-primary-blue focus:glow"></textarea>
-        <button id="contact-submit" class="btn btn-primary w-full ripple">Send Message</button>
-        <p class="text-gray-400 text-sm mt-4">Note: Email submission may not work on Hugging Face Spaces due to sandbox restrictions. Please contact me via <a href="https://www.linkedin.com/in/b-chaitanya-reddy-63211728a/" target="_blank" class="text-primary-blue glow">LinkedIn</a> or <a href="https://github.com/BChaitanyaReddy895" target="_blank" class="text-primary-blue glow">GitHub</a>.</p>
+      <div id="contact-form" class="max-w-2xl mx-auto space-y-4 sm:space-y-6 glassmorphic p-6 sm:p-8 rounded-xl">
+        <input type="email" id="email" name="email" placeholder="Your email" required class="w-full p-3 rounded-md bg-transparent border border-gray-600 text-gray-100 focus:border-primary-blue focus:glow text-sm sm:text-base">
+        <textarea id="message" name="message" placeholder="Your message" required rows="6" class="w-full p-3 rounded-md bg-transparent border border-gray-600 text-gray-100 focus:border-primary-blue focus:glow text-sm sm:text-base"></textarea>
+        <button id="contact-submit" class="btn btn-primary w-full ripple text-sm sm:text-base py-2 sm:py-3">Send Message</button>
+        <p class="text-gray-400 text-xs sm:text-sm mt-3 sm:mt-4">Note: Email submission may not work on Hugging Face Spaces due to sandbox restrictions. Please contact me via <a href="https://www.linkedin.com/in/b-chaitanya-reddy-63211728a/" target="_blank" class="text-primary-blue glow">LinkedIn</a> or <a href="https://github.com/BChaitanyaReddy895" target="_blank" class="text-primary-blue glow">GitHub</a>.</p>
       </div>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="bg-gray-800 text-gray-300 py-8 relative z-10">
+  <footer class="bg-gray-800 text-gray-300 py-6 sm:py-8 relative z-10">
     <div class="container mx-auto px-4 text-center">
-      <p>© 2025 B Chaitanya Reddy. All rights reserved.</p>
-      <div class="flex justify-center space-x-6 mt-4">
-        <a href="https://github.com/BChaitanyaReddy895" target="_blank" rel="noopener noreferrer" class="text-primary-blue hover:text-primary-blue glow">
-          <i class="fab fa-github text-2xl"></i>
+      <p class="text-sm sm:text-base">© 2025 B Chaitanya Reddy. All rights reserved.</p>
+      <div class="flex justify-center space-x-4 sm:space-x-6 mt-3 sm:mt-4">
+        <a href="https://github.com/BChaitanyaReddy895" target="_blank" rel="noopener noreferrer" class="text-primary-blue hover:text-primary-blue glow text-xl sm:text-2xl">
+          <i class="fab fa-github"></i>
         </a>
-        <a href="https://www.linkedin.com/in/b-chaitanya-reddy-63211728a/" target="_blank" rel="noopener noreferrer" class="text-primary-blue hover:text-primary-blue glow">
-          <i class="fab fa-linkedin text-2xl"></i>
+        <a href="https://www.linkedin.com/in/b-chaitanya-reddy-63211728a/" target="_blank" rel="noopener noreferrer" class="text-primary-blue hover:text-primary-blue glow text-xl sm:text-2xl">
+          <i class="fab fa-linkedin"></i>
         </a>
       </div>
     </div>
   </footer>
 
   <!-- Back to Top Button -->
-  <button id="back-to-top" class="fixed bottom-8 right-8 bg-primary-blue text-gray-900 p-3 rounded-full shadow-lg hidden neumorphic glow" aria-label="Back to top">
-    <i class="fas fa-arrow-up"></i>
+  <button id="back-to-top" class="fixed bottom-6 sm:bottom-8 right-6 sm:right-8 bg-primary-blue text-gray-900 p-3 rounded-full shadow-lg hidden neumorphic glow" aria-label="Back to top">
+    <i class="fas fa-arrow-up text-base sm:text-lg"></i>
   </button>
 
   <!-- Project Modal -->
   <div id="project-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center hidden z-50">
-    <div class="glassmorphic p-8 rounded-xl max-w-2xl w-full mx-4 relative">
-      <button id="modal-close" class="absolute top-4 right-4 text-primary-blue hover:text-primary-blue glow" aria-label="Close modal">
+    <div class="glassmorphic p-6 sm:p-8 rounded-xl max-w-2xl w-full mx-4 relative">
+      <button id="modal-close" class="absolute top-3 sm:top-4 right-3 sm:right-4 text-primary-blue hover:text-primary-blue glow text-lg sm:text-xl" aria-label="Close modal">
         <i class="fas fa-times"></i>
       </button>
-      <img id="modal-image" src="" alt="" class="w-full h-64 object-cover rounded-md mb-4 glow">
-      <h3 id="modal-title" class="text-2xl font-orbitron text-primary-blue glow mb-2"></h3>
-      <p id="modal-description" class="text-gray-300 mb-4"></p>
-      <div id="modal-tech" class="flex flex-wrap gap-2 mb-4"></div>
-      <div class="flex space-x-4">
-        <a id="modal-github" href="#" class="btn btn-primary ripple">View on GitHub</a>
-        <a id="modal-live" href="#" class="btn btn-secondary ripple">Live Demo</a>
+      <img id="modal-image" src="" alt="" class="w-full h-48 sm:h-64 object-cover rounded-md mb-3 sm:mb-4 glow">
+      <h3 id="modal-title" class="text-xl sm:text-2xl font-orbitron text-primary-blue glow mb-2"></h3>
+      <p id="modal-description" class="text-gray-300 text-sm sm:text-base mb-3 sm:mb-4"></p>
+      <div id="modal-tech" class="flex flex-wrap gap-2 mb-3 sm:mb-4"></div>
+      <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+        <a id="modal-github" href="#" class="btn btn-primary ripple text-sm sm:text-base py-2 sm:py-3 px-4 sm:px-6">View on GitHub</a>
+        <a id="modal-live" href="#" class="btn btn-secondary ripple text-sm sm:text-base py-2 sm:py-3 px-4 sm:px-6">Live Demo</a>
       </div>
     </div>
   </div>
