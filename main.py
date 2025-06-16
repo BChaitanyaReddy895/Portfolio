@@ -3,8 +3,9 @@ import logging
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-import psycopg2
+import sqlite3
 import os
+import shutil
 
 app = Flask(__name__)
 
@@ -19,45 +20,70 @@ RECIPIENT_EMAIL = "chaituchaithanyareddy895@gmail.com"
 # Admin password for delete functionality (replace with a secure password)
 ADMIN_PASSWORD = "Chaitu895@"  # Change this to a strong password
 
-# PostgreSQL database setup (replace with your Render PostgreSQL credentials)
-DB_HOST = os.getenv("DB_HOST", "dpg-d160vaodl3ps7389dl3g-a")
-DB_PORT = os.getenv("DB_PORT", "5432")
-DB_USER = os.getenv("DB_USER", "portfolio_db_5m30_user")
-DB_PASSWORD = os.getenv("DB_PASSWORD", "DvwW2lHP30ixxnl2190U88W569QFYjWB")
-DB_NAME = os.getenv("DB_NAME", "portfolio_db_5m30")
+# SQLite database paths
+PROJECT_DB_PATH = os.path.join(os.path.dirname(__file__), "data", "portfolio.db")
+PERSISTENT_DB_PATH = "/data/portfolio.db"
+FALLBACK_DB_PATH = "/tmp/portfolio.db"
 
 def init_db():
     conn = None
+    db_path = PERSISTENT_DB_PATH
+
     try:
-        conn = psycopg2.connect(
-            host=DB_HOST,
-            port=DB_PORT,
-            user=DB_USER,
-            password=DB_PASSWORD,
-            database=DB_NAME
-        )
+        # Check if /data/ exists; if not, fall back to /tmp/
+        if not os.path.exists("/data"):
+            logging.warning("Persistent storage directory '/data' not found. Falling back to /tmp (non-persistent).")
+            db_path = FALLBACK_DB_PATH
+            # Ensure /tmp/ exists (it should, but just in case)
+            os.makedirs(os.path.dirname(db_path), exist_ok=True)
+
+        # Check if the database exists at the target path; if not, copy from project directory
+        if not os.path.exists(db_path):
+            if os.path.exists(PROJECT_DB_PATH):
+                shutil.copy(PROJECT_DB_PATH, db_path)
+                logging.info(f"Copied portfolio.db from {PROJECT_DB_PATH} to {db_path}")
+            else:
+                logging.warning(f"Initial portfolio.db not found at {PROJECT_DB_PATH}. Creating a new database.")
+
+        # Connect to the database
+        conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
+
         # Create reviews table if it doesn't exist, with position column
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS reviews (
-                id SERIAL PRIMARY KEY,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
                 rating INTEGER NOT NULL,
                 description TEXT NOT NULL,
                 position INTEGER DEFAULT 0
             )
         ''')
+
+        # Check if position column exists; if not, add it
+        cursor.execute("PRAGMA table_info(reviews)")
+        columns = [col[1] for col in cursor.fetchall()]
+        if 'position' not in columns:
+            cursor.execute("ALTER TABLE reviews ADD COLUMN position INTEGER DEFAULT 0")
+            logging.info("Added 'position' column to reviews table.")
+
+        # Optional: Clean up test entries (IDs 9-12) if they exist (run once, then comment out)
+        cursor.execute("DELETE FROM reviews WHERE id IN (9, 10, 11, 12)")
+        logging.info("Cleaned up test entries from reviews table.")
+
         conn.commit()
-        logging.info("PostgreSQL database and reviews table initialized successfully.")
+        logging.info(f"SQLite database initialized successfully at {db_path}.")
     except Exception as e:
-        logging.error(f"Error initializing database: {str(e)}")
+        logging.error(f"Error initializing SQLite database: {str(e)}")
         raise
     finally:
         if conn:
             conn.close()
 
-# Initialize the database when the app starts
-init_db()
+    return db_path
+
+# Initialize the database and set the DB_PATH for the app to use
+DB_PATH = init_db()
 
 # Data for API endpoints
 skills_data = [
@@ -225,65 +251,58 @@ def get_hobbies():
 
 @app.route('/api/reviews', methods=['GET', 'POST'])
 def handle_reviews():
-    conn = psycopg2.connect(
-        host=DB_HOST,
-        port=DB_PORT,
-        user=DB_USER,
-        password=DB_PASSWORD,
-        database=DB_NAME
-    )
-    cursor = conn.cursor()
-    
-    if request.method == 'POST':
-        try:
-            data = request.get_json()
-            if not data or 'rating' not in data or 'description' not in data or 'name' not in data:
-                return jsonify({"error": "Invalid request data"}), 400
-            rating = int(data['rating'])
-            if rating < 1 or rating > 5:
-                return jsonify({"error": "Rating must be between 1 and 5"}), 400
-            description = data['description']
-            name = data['name']
-            # Optional: Allow position to be specified in the request, default to 0
-            position = int(data.get('position', 0))
-            
-            # Insert the review into the database with the position
-            cursor.execute(
-                "INSERT INTO reviews (name, rating, description, position) VALUES (%s, %s, %s, %s) RETURNING id",
-                (name, rating, description, position)
-            )
-            conn.commit()
-            logging.info(f"New review added: {name}, {rating}, {description}, position: {position}")
-            return jsonify({"message": "Review submitted successfully!"})
-        except Exception as e:
-            conn.rollback()
-            logging.error(f"Error in /api/reviews POST: {str(e)}")
-            return jsonify({"error": "Internal server error"}), 500
-        finally:
-            conn.close()
-    else:  # GET request
-        try:
-            # Sort by position (ascending), then by id (ascending) as a tiebreaker
-            cursor.execute("SELECT id, name, rating, description, position FROM reviews ORDER BY position ASC, id ASC")
-            reviews = [{"id": row[0], "name": row[1], "rating": row[2], "description": row[3], "position": row[4]} for row in cursor.fetchall()]
-            return jsonify(reviews)
-        except Exception as e:
-            logging.error(f"Error in /api/reviews GET: {str(e)}")
-            return jsonify({"error": "Internal server error"}), 500
-        finally:
+    conn = None
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        
+        if request.method == 'POST':
+            try:
+                data = request.get_json()
+                if not data or 'rating' not in data or 'description' not in data or 'name' not in data:
+                    return jsonify({"error": "Invalid request data"}), 400
+                rating = int(data['rating'])
+                if rating < 1 or rating > 5:
+                    return jsonify({"error": "Rating must be between 1 and 5"}), 400
+                description = data['description']
+                name = data['name']
+                # Optional: Allow position to be specified in the request, default to 0
+                position = int(data.get('position', 0))
+                
+                # Insert the review into the database with the position
+                cursor.execute(
+                    "INSERT INTO reviews (name, rating, description, position) VALUES (?, ?, ?, ?)",
+                    (name, rating, description, position)
+                )
+                conn.commit()
+                logging.info(f"New review added: {name}, {rating}, {description}, position: {position}")
+                return jsonify({"message": "Review submitted successfully!"})
+            except Exception as e:
+                conn.rollback()
+                logging.error(f"Error in /api/reviews POST: {str(e)}")
+                return jsonify({"error": "Internal server error"}), 500
+        else:  # GET request
+            try:
+                # Sort by position (ascending), then by id (ascending) as a tiebreaker
+                cursor.execute("SELECT id, name, rating, description, position FROM reviews ORDER BY position ASC, id ASC")
+                reviews = [{"id": row[0], "name": row[1], "rating": row[2], "description": row[3], "position": row[4]} for row in cursor.fetchall()]
+                return jsonify(reviews)
+            except Exception as e:
+                logging.error(f"Error in /api/reviews GET: {str(e)}")
+                return jsonify({"error": "Internal server error"}), 500
+    except Exception as e:
+        logging.error(f"Error connecting to SQLite database in /api/reviews: {str(e)}")
+        return jsonify({"error": f"Database connection error: {str(e)}"}), 500
+    finally:
+        if conn:
             conn.close()
 
 @app.route('/api/reviews/update_position/<int:id>', methods=['PATCH'])
 def update_review_position(id):
-    conn = psycopg2.connect(
-        host=DB_HOST,
-        port=DB_PORT,
-        user=DB_USER,
-        password=DB_PASSWORD,
-        database=DB_NAME
-    )
-    cursor = conn.cursor()
+    conn = None
     try:
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
         # Check for admin password in the request body
         data = request.get_json()
         if not data or 'password' not in data:
@@ -299,34 +318,29 @@ def update_review_position(id):
         position = int(data['position'])
 
         # Check if the review exists
-        cursor.execute("SELECT name FROM reviews WHERE id = %s", (id,))
+        cursor.execute("SELECT name FROM reviews WHERE id = ?", (id,))
         review = cursor.fetchone()
         if not review:
             return jsonify({"error": "Review not found"}), 404
         
         # Update the position of the review
-        cursor.execute("UPDATE reviews SET position = %s WHERE id = %s", (position, id))
+        cursor.execute("UPDATE reviews SET position = ? WHERE id = ?", (position, id))
         conn.commit()
         logging.info(f"Review position updated for id {id}: {review[0]}, new position: {position}")
         return jsonify({"message": f"Position updated for review by {review[0]}"})
     except Exception as e:
-        conn.rollback()
         logging.error(f"Error in /api/reviews/update_position/{id}: {str(e)}")
         return jsonify({"error": "Internal server error"}), 500
     finally:
-        conn.close()
+        if conn:
+            conn.close()
 
 @app.route('/api/reviews/delete/<int:id>', methods=['DELETE'])
 def delete_review(id):
-    conn = psycopg2.connect(
-        host=DB_HOST,
-        port=DB_PORT,
-        user=DB_USER,
-        password=DB_PASSWORD,
-        database=DB_NAME
-    )
-    cursor = conn.cursor()
+    conn = None
     try:
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
         # Check for admin password in the request body
         data = request.get_json()
         if not data or 'password' not in data:
@@ -337,22 +351,22 @@ def delete_review(id):
             return jsonify({"error": "Invalid password"}), 403
 
         # Check if the review exists
-        cursor.execute("SELECT name FROM reviews WHERE id = %s", (id,))
+        cursor.execute("SELECT name FROM reviews WHERE id = ?", (id,))
         review = cursor.fetchone()
         if not review:
             return jsonify({"error": "Review not found"}), 404
         
         # Delete the review
-        cursor.execute("DELETE FROM reviews WHERE id = %s", (id,))
+        cursor.execute("DELETE FROM reviews WHERE id = ?", (id,))
         conn.commit()
         logging.info(f"Review deleted with id {id}: {review[0]}")
         return jsonify({"message": f"Review by {review[0]} deleted successfully!"})
     except Exception as e:
-        conn.rollback()
         logging.error(f"Error in /api/reviews/delete/{id}: {str(e)}")
         return jsonify({"error": "Internal server error"}), 500
     finally:
-        conn.close()
+        if conn:
+            conn.close()
 
 @app.route('/api/projects')
 def get_projects():
