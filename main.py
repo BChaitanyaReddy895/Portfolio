@@ -166,14 +166,6 @@ projects_data = [
         "technologies": ["Python", "NLP", "HTML", "CSS", "JavaScript"],
         "githubLink": "https://github.com/BChaitanyaReddy895/Bengali_English_translator",
         "liveLink": "https://chaitanya895-bangla-translator.hf.space"
-    },
-    {
-        "title": "SkillSync",
-        "description": "A Flask-based web platform for matching interns with internships, featuring recruiter dashboards, applicant tracking, and skill-based resume matching.",
-        "image": "/static/images/SkillSync.png",
-        "technologies": ["Python", "Flask", "SQLite", "Pandas", "NLTK", "HTML", "CSS", "JavaScript", "Gunicorn", "Werkzeug"],
-        "githubLink": "https://github.com/BChaitanyaReddy895/SkillSync",
-        "liveLink": "https://chaitanya895-skillsync.hf.space"
     }
 ]
 
