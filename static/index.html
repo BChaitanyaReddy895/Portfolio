@@ -37,6 +37,9 @@
         <a href="#hobbies" class="nav-link text-sm sm:text-base text-primary-blue hover:text-primary-blue glow">Hobbies</a>
         <a href="#projects" class="nav-link text-sm sm:text-base text-primary-blue hover:text-primary-blue glow">Projects</a>
         <a href="#education" class="nav-link text-sm sm:text-base text-primary-blue hover:text-primary-blue glow">Education</a>
+        <a href="#certifications" class="nav-link text-sm sm:text-base text-primary-blue hover:text-primary-blue glow">Certifications</a>
+        <a href="#volunteer" class="nav-link text-sm sm:text-base text-primary-blue hover:text-primary-blue glow">Volunteer</a>
+        <a href="#talks" class="nav-link text-sm sm:text-base text-primary-blue hover:text-primary-blue glow">Talks</a>
         <a href="#resume" class="nav-link text-sm sm:text-base text-primary-blue hover:text-primary-blue glow">Resume</a>
         <a href="#contact" class="nav-link text-sm sm:text-base text-primary-blue hover:text-primary-blue glow">Contact</a>
       </div>
@@ -59,6 +62,9 @@
         <a href="#hobbies" class="nav-link text-base text-primary-blue hover:text-primary-blue glow">Hobbies</a>
         <a href="#projects" class="nav-link text-base text-primary-blue hover:text-primary-blue glow">Projects</a>
         <a href="#education" class="nav-link text-base text-primary-blue hover:text-primary-blue glow">Education</a>
+        <a href="#certifications" class="nav-link text-base text-primary-blue hover:text-primary-blue glow">Certifications</a>
+        <a href="#volunteer" class="nav-link text-base text-primary-blue hover:text-primary-blue glow">Volunteer</a>
+        <a href="#talks" class="nav-link text-base text-primary-blue hover:text-primary-blue glow">Talks</a>
         <a href="#resume" class="nav-link text-base text-primary-blue hover:text-primary-blue glow">Resume</a>
         <a href="#contact" class="nav-link text-base text-primary-blue hover:text-primary-blue glow">Contact</a>
       </div>
@@ -73,6 +79,7 @@
         <p id="typing-text" class="text-lg sm:text-xl md:text-2xl text-gray-300 mb-6">Python Developer | Machine Learning Enthusiast | AI Innovator</p>
         <div class="flex flex-col sm:flex-row justify-center md:justify-start space-y-3 sm:space-y-0 sm:space-x-4">
           <a href="#projects" class="btn btn-primary ripple text-sm sm:text-base py-2 sm:py-3 px-4 sm:px-6">View My Work <i class="fas fa-arrow-right ml-2"></i></a>
+          <a href="#talks" class="btn btn-secondary ripple text-sm sm:text-base py-2 sm:py-3 px-4 sm:px-6">Watch My Talk <i class="fas fa-video ml-2"></i></a>
           <a href="#contact" class="btn btn-secondary ripple text-sm sm:text-base py-2 sm:py-3 px-4 sm:px-6">Contact Me</a>
         </div>
       </div>
@@ -184,6 +191,39 @@
     </div>
   </section>
 
+  <!-- Certifications Section -->
+  <section id="certifications" class="py-12 sm:py-20 relative z-10">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-8 sm:mb-12">
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-orbitron text-primary-blue glow">Certifications</h2>
+        <div class="underline"></div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8" id="certifications-grid"></div>
+    </div>
+  </section>
+
+  <!-- Volunteer Experience Section -->
+  <section id="volunteer" class="py-12 sm:py-20 relative z-10">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-8 sm:mb-12">
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-orbitron text-primary-blue glow">Volunteer Experience</h2>
+        <div class="underline"></div>
+      </div>
+      <div class="flex flex-col gap-8 sm:gap-12" id="volunteer-grid"></div>
+    </div>
+  </section>
+
+  <!-- Talks Section -->
+  <section id="talks" class="py-12 sm:py-20 relative z-10">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-8 sm:mb-12">
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-orbitron text-primary-blue glow">My Tech Talks</h2>
+        <div class="underline"></div>
+      </div>
+      <div class="grid grid-cols-1 gap-6 sm:gap-8" id="talks-grid"></div>
+    </div>
+  </section>
+
   <!-- Resume Section -->
   <section id="resume" class="py-12 sm:py-20 relative z-10">
     <div class="container mx-auto px-4">
@@ -211,7 +251,8 @@
   <section id="contact" class="py-12 sm:py-20 relative z-10">
     <div class="container mx-auto px-4">
       <div class="text-center mb-8 sm:mb-12">
-        <h2 class="text-2xl sm:text-3xl md:text-4xl font-orbitron text-primary-blue glow">Contact Me</h2>
+        <h2 class="text-2xl sm:text-副
+System: 3xl md:text-4xl font-orbitron text-primary-blue glow">Contact Me</h2>
         <p class="text-gray-300 mt-3 sm:mt-4 text-sm sm:text-base">Feel free to reach out for collaborations or just a friendly hello!</p>
       </div>
       <div id="contact-form" class="max-w-2xl mx-auto space-y-4 sm:space-y-6 glassmorphic p-6 sm:p-8 rounded-xl">
@@ -249,10 +290,14 @@
       <button id="modal-close" class="absolute top-3 sm:top-4 right-3 sm:right-4 text-primary-blue hover:text-primary-blue glow text-lg sm:text-xl" aria-label="Close modal">
         <i class="fas fa-times"></i>
       </button>
-      <img id="modal-image" src="" alt="" class="w-full h-48 sm:h-64 object-cover rounded-md mb-3 sm:mb-4 glow">
+      <div id="modal-media" class="w-full h-48 sm:h-64 mb-3 sm:mb-4"></div>
       <h3 id="modal-title" class="text-xl sm:text-2xl font-orbitron text-primary-blue glow mb-2"></h3>
       <p id="modal-description" class="text-gray-300 text-sm sm:text-base mb-3 sm:mb-4"></p>
       <div id="modal-tech" class="flex flex-wrap gap-2 mb-3 sm:mb-4"></div>
+      <h4 class="text-md font-orbitron text-primary-blue glow mb-2">My Role</h4>
+      <p id="modal-role" class="text-gray-300 text-sm sm:text-base mb-3 sm:mb-4"></p>
+      <h4 class="text-md font-orbitron text-primary-blue glow mb-2">Key Contributions</h4>
+      <ul id="modal-contributions" class="list-disc pl-5 text-gray-300 text-sm sm:text-base mb-3 sm:mb-4"></ul>
       <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
         <a id="modal-github" href="#" class="btn btn-primary ripple text-sm sm:text-base py-2 sm:py-3 px-4 sm:px-6">View on GitHub</a>
         <a id="modal-live" href="#" class="btn btn-secondary ripple text-sm sm:text-base py-2 sm:py-3 px-4 sm:px-6">Live Demo</a>
