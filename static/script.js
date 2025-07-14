@@ -1,3 +1,4 @@
+
 console.log("Script.js started executing at:", new Date().toISOString());
 
 // Initialize Particles.js
@@ -49,11 +50,11 @@ window.addEventListener('resize', () => {
 // GSAP Animations
 gsap.registerPlugin(ScrollTrigger);
 
-// Animate the static text "Hi, I'm B Chaitanya Reddy" and its siblings
+// Animate the static text and buttons in hero section
 gsap.fromTo('.animate-slide-in', 
   { y: 100, opacity: 0 }, 
   { y: 0, opacity: 1, duration: 1.2, ease: 'power3.out', onComplete: () => {
-    document.querySelector('.animate-slide-in').style.opacity = '1'; // Ensure final state
+    document.querySelector('.animate-slide-in').style.opacity = '1';
   }}
 );
 
@@ -61,7 +62,7 @@ gsap.fromTo('.animate-slide-in',
 gsap.fromTo('.animate-fade-in',
   { opacity: 0 },
   { opacity: 1, duration: 1.5, ease: 'power3.out', onComplete: () => {
-    document.querySelector('.animate-fade-in').style.opacity = '1'; // Ensure final state
+    document.querySelector('.animate-fade-in').style.opacity = '1';
   }}
 );
 
@@ -172,10 +173,9 @@ fetchData('/api/skills', 'skills-grid', (data, container) => {
     `;
     container.appendChild(card);
     console.log(`Rendered skill card for ${category.title}`);
-    // Animate the circular progress
     card.querySelectorAll('.progress-fill').forEach(circle => {
       const proficiency = circle.parentElement.parentElement.querySelector('.progress-percentage').textContent.replace('%', '');
-      const circumference = 2 * Math.PI * 18; // Circumference of the circle (r=18)
+      const circumference = 2 * Math.PI * 18;
       const offset = circumference * (proficiency / 100);
       gsap.to(circle, {
         scrollTrigger: { 
@@ -235,7 +235,6 @@ fetchData('/api/hobbies', 'hobbies-grid', (data, container) => {
         </div>
       </div>
     `;
-    // Add review form and testimonials for "Educating Others"
     if (hobby.title === "Educating Others") {
       card.innerHTML += `
         <div class="mt-6">
@@ -273,7 +272,6 @@ fetchData('/api/hobbies', 'hobbies-grid', (data, container) => {
     VanillaTilt.init(card);
     gsap.from(card, { scrollTrigger: { trigger: card, start: 'top 80%' }, y: 50, opacity: 0, duration: 1, ease: 'power3.out' });
 
-    // Star Rating Logic (only if the review form exists)
     if (hobby.title === "Educating Others") {
       const stars = card.querySelectorAll('.star');
       const ratingInput = card.querySelector('#review-rating');
@@ -292,7 +290,6 @@ fetchData('/api/hobbies', 'hobbies-grid', (data, container) => {
         });
       });
 
-      // Submit Review
       card.querySelector('#submit-review').addEventListener('click', () => {
         const name = card.querySelector('#review-name').value.trim();
         const rating = parseInt(card.querySelector('#review-rating').value);
@@ -312,12 +309,10 @@ fetchData('/api/hobbies', 'hobbies-grid', (data, container) => {
         .then(data => {
           if (data.message) {
             alert('Thank you for your feedback!');
-            // Clear form
             card.querySelector('#review-name').value = '';
             card.querySelector('#review-description').value = '';
             card.querySelector('#review-rating').value = '0';
             stars.forEach(star => star.innerHTML = '<i class="far fa-star text-gray-400"></i>');
-            // Refresh reviews
             fetchReviews(card.querySelector('#reviews-container'));
           } else {
             alert('Error submitting feedback: ' + (data.error || 'Unknown error'));
@@ -329,7 +324,6 @@ fetchData('/api/hobbies', 'hobbies-grid', (data, container) => {
         });
       });
 
-      // Fetch and Display Reviews
       function fetchReviews(reviewsContainer) {
         fetch('/api/reviews')
           .then(response => response.json())
@@ -360,7 +354,6 @@ fetchData('/api/hobbies', 'hobbies-grid', (data, container) => {
               reviewsContainer.appendChild(reviewDiv);
               gsap.from(reviewDiv, { opacity: 0, y: 20, duration: 0.8, ease: 'power3.out' });
 
-              // Add event listener for delete button
               reviewDiv.querySelector('.delete-review').addEventListener('click', () => {
                 const confirmDelete = confirm(`Are you sure you want to delete the review by ${review.name}?`);
                 if (confirmDelete) {
@@ -379,7 +372,7 @@ fetchData('/api/hobbies', 'hobbies-grid', (data, container) => {
                   .then(data => {
                     if (data.message) {
                       alert(data.message);
-                      fetchReviews(reviewsContainer); // Refresh reviews
+                      fetchReviews(reviewsContainer);
                     } else {
                       alert('Error deleting review: ' + (data.error || 'Unknown error'));
                     }
@@ -398,7 +391,6 @@ fetchData('/api/hobbies', 'hobbies-grid', (data, container) => {
           });
       }
 
-      // Initial fetch of reviews
       fetchReviews(card.querySelector('#reviews-container'));
     }
   });
@@ -429,9 +421,17 @@ fetchData('/api/projects', 'projects-grid', (data, container) => {
       </div>
     `;
     card.addEventListener('click', () => {
-      document.getElementById('modal-image').src = project.image;
+      const mediaContainer = document.getElementById('modal-media');
+      mediaContainer.innerHTML = project.video ? `
+        <div class="video-container">
+          <iframe src="${project.video}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen class="glow"></iframe>
+        </div>
+      ` : `<img src="${project.image}" alt="${project.title}" class="w-full h-48 sm:h-64 object-cover rounded-md glow">`;
       document.getElementById('modal-title').textContent = project.title;
       document.getElementById('modal-description').textContent = project.description;
+      document.getElementById('modal-role').textContent = project.role;
+      const contributionsContainer = document.getElementById('modal-contributions');
+      contributionsContainer.innerHTML = project.contributions.map(contribution => `<li>${contribution}</li>`).join('');
       const techContainer = document.getElementById('modal-tech');
       techContainer.innerHTML = project.technologies.map(tech => `<span class="tech-tag glassmorphic text-xs px-2 py-1 rounded-full text-primary-blue glow">${tech}</span>`).join('');
       document.getElementById('modal-github').href = project.githubLink;
@@ -486,7 +486,110 @@ fetchData('/api/education', 'education-grid', (data, container) => {
   });
 });
 
-// Handle Contact Form Submission via Button Click
+// Render Certifications
+fetchData('/api/certifications', 'certifications-grid', (data, container) => {
+  data.forEach(cert => {
+    const card = document.createElement('div');
+    card.className = 'certification-card glassmorphic p-6 rounded-xl hover:scale-105 transition-transform';
+    card.setAttribute('data-tilt', '');
+    card.setAttribute('data-tilt-max', '10');
+    card.innerHTML = `
+      <div class="flex items-start space-x-4">
+        <div class="icon-wrapper p-3 glassmorphic rounded-full">
+          <i class="fas fa-certificate text-primary-blue glow"></i>
+        </div>
+        <div class="flex-1">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-lg font-orbitron text-primary-blue glow">${cert.title}</h3>
+            <div class="period flex items-center text-gray-400">
+              <i class="fas fa-calendar mr-1"></i>
+              <span>${cert.year}</span>
+            </div>
+          </div>
+          <h4 class="text-primary-blue glow mb-2">${cert.platform}</h4>
+          <p class="text-gray-300 mb-4">${cert.description}</p>
+          <img src="${cert.badge}" alt="${cert.title} badge" class="w-24 h-24 object-contain mb-4 glow">
+          <a href="${cert.certificateLink}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary ripple text-sm">Verify Certificate</a>
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+    VanillaTilt.init(card);
+    gsap.from(card, { scrollTrigger: { trigger: card, start: 'top 80%' }, y: 50, opacity: 0, duration: 1, ease: 'power3.out' });
+  });
+});
+
+// Render Volunteer Experience
+fetchData('/api/volunteer', 'volunteer-grid', (data, container) => {
+  data.forEach(vol => {
+    const card = document.createElement('div');
+    card.className = 'volunteer-card glassmorphic p-6 rounded-xl hover:scale-105 transition-transform';
+    card.setAttribute('data-tilt', '');
+    card.setAttribute('data-tilt-max', '10');
+    card.innerHTML = `
+      <div class="flex items-start space-x-4">
+        <div class="icon-wrapper p-3 glassmorphic rounded-full">
+          <i class="fas fa-hands-helping text-primary-blue glow"></i>
+        </div>
+        <div class="flex-1">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-lg font-orbitron text-primary-blue glow">${vol.role}</h3>
+            <div class="period flex items-center text-gray-400">
+              <i class="fas fa-calendar mr-1"></i>
+              <span>${vol.period}</span>
+            </div>
+          </div>
+          <h4 class="text-primary-blue glow mb-2">${vol.organization}</h4>
+          <p class="text-gray-300 mb-4">${vol.description}</p>
+          <h5 class="font-orbitron text-primary-blue glow">Contributions:</h5>
+          <ul class="list-disc pl-5 text-gray-300">
+            ${vol.contributions.map(contribution => `<li>${contribution}</li>`).join('')}
+          </ul>
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+    VanillaTilt.init(card);
+    gsap.from(card, { scrollTrigger: { trigger: card, start: 'top 80%' }, y: 50, opacity: 0, duration: 1, ease: 'power3.out' });
+  });
+});
+
+// Render Talks
+fetchData('/api/talks', 'talks-grid', (data, container) => {
+  data.forEach(talk => {
+    const card = document.createElement('div');
+    card.className = 'talk-card glassmorphic p-6 rounded-xl hover:scale-105 transition-transform';
+    card.setAttribute('data-tilt', '');
+    card.setAttribute('data-tilt-max', '10');
+    card.innerHTML = `
+      <div class="flex items-start space-x-4">
+        <div class="icon-wrapper p-3 glassmorphic rounded-full">
+          <i class="fas fa-microphone text-primary-blue glow"></i>
+        </div>
+        <div class="flex-1">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-lg font-orbitron text-primary-blue glow">${talk.title}</h3>
+            <div class="date flex items-center text-gray-400">
+              <i class="fas fa-calendar mr-1"></i>
+              <span>${talk.date}</span>
+            </div>
+          </div>
+          <h4 class="text-primary-blue glow mb-2">${talk.event}</h4>
+          <p class="text-gray-300 mb-4">${talk.description}</p>
+          <div class="video-container mb-4">
+            <iframe src="${talk.videoLink}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen class="glow"></iframe>
+          </div>
+          <a href="${talk.videoLink}" target="_blank" rel="noopener noreferrer" class="btn btn-primary ripple text-sm">Watch Full Talk</a>
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+    VanillaTilt.init(card);
+    gsap.from(card, { scrollTrigger: { trigger: card, start: 'top 80%' }, y: 50, opacity: 0, duration: 1, ease: 'power3.out' });
+  });
+});
+
+// Handle Contact Form Submission
 const contactSubmitButton = document.getElementById('contact-submit');
 const emailInput = document.getElementById('email');
 const messageInput = document.getElementById('message');
