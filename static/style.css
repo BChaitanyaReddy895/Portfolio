@@ -9,7 +9,7 @@
 
 /* Color Variables */
 :root {
-  --primary-blue: #1E90FF; /* Accent color for progress rings */
+  --primary-blue: #1E90FF;
   --dark-bg: #1A0B2E;
   --light-gray: #F5F5F5;
   --text-gray: #666;
@@ -45,7 +45,7 @@
   text-shadow: 0 0 15px var(--primary-blue);
 }
 
-img.glow {
+img.glow, iframe.glow {
   box-shadow: 0 0 15px var(--primary-blue);
 }
 
@@ -112,7 +112,7 @@ img.glow {
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
-  min-height: 44px; /* Ensure touch-friendly size */
+  min-height: 44px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -132,7 +132,7 @@ img.glow {
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
-  min-height: 44px; /* Ensure touch-friendly size */
+  min-height: 44px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -163,14 +163,13 @@ img.glow {
   }
 }
 
-/* Skills Section New Design */
+/* Skills Section */
 #skills {
-  background: #fff; /* Clean white background */
+  background: #fff;
   position: relative;
   overflow: hidden;
 }
 
-/* Style for skill cards in horizontal scroll */
 #skills-grid {
   display: flex;
   overflow-x: auto;
@@ -178,10 +177,9 @@ img.glow {
   -webkit-overflow-scrolling: touch;
 }
 
-/* Modern Skill Card Design */
 .skill-card {
-  flex: 0 0 180px; /* Compact width */
-  height: 280px; /* Taller to fit skills vertically */
+  flex: 0 0 180px;
+  height: 280px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -195,20 +193,17 @@ img.glow {
   margin: 0 0.75rem;
 }
 
-/* Hover Effect (with touch fallback) */
 .skill-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
-/* Icon Styling */
 .skill-card i {
   font-size: 1.5rem;
   color: var(--primary-blue);
   margin-bottom: 0.5rem;
 }
 
-/* Category Title */
 .skill-card h3 {
   font-size: 1rem;
   font-weight: 600;
@@ -216,13 +211,11 @@ img.glow {
   margin-bottom: 0.75rem;
 }
 
-/* Adjust the skills list inside the card */
 .skill-card .space-y-3 {
   width: 100%;
   overflow-y: auto;
 }
 
-/* Style the scrollbar for the skills list inside the card */
 .skill-card .space-y-3::-webkit-scrollbar {
   width: 4px;
 }
@@ -240,7 +233,6 @@ img.glow {
   background: #1E70D0;
 }
 
-/* Skill Item Layout */
 .skill-item {
   display: flex;
   justify-content: space-between;
@@ -248,7 +240,6 @@ img.glow {
   gap: 0.5rem;
 }
 
-/* Skill Name */
 .skill-item span:first-child {
   flex: 1;
   text-align: left;
@@ -260,14 +251,12 @@ img.glow {
   max-width: 70px;
 }
 
-/* Circular Progress Container */
 .progress-circle-container {
   position: relative;
   width: 36px;
   height: 36px;
 }
 
-/* Circular Progress Background */
 .progress-circle-bg {
   position: absolute;
   width: 100%;
@@ -276,14 +265,12 @@ img.glow {
   background: #E5E5E5;
 }
 
-/* Circular Progress Fill (SVG) */
 .progress-circle {
   width: 100%;
   height: 100%;
-  transform: rotate(-90deg); /* Start from the top */
+  transform: rotate(-90deg);
 }
 
-/* Percentage Text Inside Circle */
 .progress-percentage {
   position: absolute;
   top: 50%;
@@ -293,7 +280,6 @@ img.glow {
   color: var(--text-gray);
 }
 
-/* Ensure skills section is visible */
 #skills,
 #skills-grid,
 .skill-card,
@@ -306,7 +292,6 @@ img.glow {
   opacity: 1 !important;
 }
 
-/* Custom Scrollbar for the horizontal scroll */
 #skills-grid::-webkit-scrollbar {
   height: 6px;
 }
@@ -328,6 +313,31 @@ img.glow {
 .project-overlay {
   background: var(--primary-blue);
   transition: opacity 0.3s ease;
+}
+
+/* Certifications, Volunteer, and Talks Cards */
+.certification-card, .volunteer-card, .talk-card {
+  transition: transform 0.3s ease;
+}
+
+.certification-card:hover, .volunteer-card:hover, .talk-card:hover {
+  transform: scale(1.05);
+}
+
+/* Video Container */
+.video-container {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 /* Global Scrollbar */
@@ -367,44 +377,13 @@ img.glow {
   animation: fadeIn 1.5s ease-in-out;
 }
 
-/* Review Form and Testimonials (Hobbies Section) */
-#hobbies-grid .hobby-card {
-  transition: transform 0.3s ease;
-}
-
-#hobbies-grid .hobby-card:hover {
-  transform: scale(1.05);
-}
-
-/* Star Rating */
-#star-rating .star {
-  transition: color 0.3s ease;
-}
-
-/* Testimonials */
-#reviews-container .glassmorphic {
-  transition: all 0.3s ease;
-}
-
-/* Delete Button */
-.delete-review {
-  transition: color 0.3s ease;
-  min-height: 44px;
-  min-width: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 /* Responsive Adjustments */
-@media (max-width: 640px) { /* Tailwind's 'sm' breakpoint */
-  /* Navigation Bar */
+@media (max-width: 640px) {
   #navbar .container {
     padding-left: 1rem;
     padding-right: 1rem;
   }
 
-  /* Hero Section */
   #home {
     padding-top: 5rem;
   }
@@ -418,19 +397,16 @@ img.glow {
     line-height: 1.4;
   }
 
-  /* Underline Effect */
   .underline {
     width: 50px;
     height: 3px;
   }
 
-  /* Buttons */
   .btn-primary, .btn-secondary {
     padding: 8px 16px;
     font-size: 0.875rem;
   }
 
-  /* About Section */
   #about .container {
     padding-left: 1rem;
     padding-right: 1rem;
@@ -452,7 +428,6 @@ img.glow {
     font-size: 0.875rem;
   }
 
-  /* Skills Section */
   #skills .container {
     padding-left: 1rem;
     padding-right: 1rem;
@@ -503,7 +478,6 @@ img.glow {
     height: 5px;
   }
 
-  /* Achievements Section */
   #achievements .container {
     padding-left: 1rem;
     padding-right: 1rem;
@@ -533,7 +507,6 @@ img.glow {
     font-size: 0.875rem;
   }
 
-  /* Hobbies Section */
   #hobbies .container {
     padding-left: 1rem;
     padding-right: 1rem;
@@ -559,7 +532,6 @@ img.glow {
     font-size: 0.875rem;
   }
 
-  /* Review Form and Testimonials */
   .hobby-card h4 {
     font-size: 0.9rem;
   }
@@ -598,7 +570,6 @@ img.glow {
     font-size: 0.875rem;
   }
 
-  /* Projects Section */
   #projects .container {
     padding-left: 1rem;
     padding-right: 1rem;
@@ -629,49 +600,47 @@ img.glow {
     padding: 0.25rem 0.5rem;
   }
 
-  /* Education Section */
-  #education .container {
+  #education .container, #certifications .container, #volunteer .container, #talks .container {
     padding-left: 1rem;
     padding-right: 1rem;
   }
 
-  .education-card {
+  .education-card, .certification-card, .volunteer-card, .talk-card {
     padding: 1rem;
   }
 
-  .education-card .icon-wrapper {
+  .education-card .icon-wrapper, .certification-card .icon-wrapper, .volunteer-card .icon-wrapper, .talk-card .icon-wrapper {
     padding: 0.5rem;
   }
 
-  .education-card i {
+  .education-card i, .certification-card i, .volunteer-card i, .talk-card i {
     font-size: 1rem;
   }
 
-  .education-card h3 {
+  .education-card h3, .certification-card h3, .volunteer-card h3, .talk-card h3 {
     font-size: 1rem;
   }
 
-  .education-card .period {
+  .education-card .period, .certification-card .period, .volunteer-card .period, .talk-card .date {
     font-size: 0.75rem;
   }
 
-  .education-card h4 {
+  .education-card h4, .certification-card h4, .volunteer-card h4, .talk-card h4 {
     font-size: 0.9rem;
   }
 
-  .education-card p {
+  .education-card p, .certification-card p, .volunteer-card p, .talk-card p {
     font-size: 0.875rem;
   }
 
-  .education-card h5 {
+  .education-card h5, .certification-card h5, .volunteer-card h5, .talk-card h5 {
     font-size: 0.9rem;
   }
 
-  .education-card ul {
+  .education-card ul, .certification-card ul, .volunteer-card ul, .talk-card ul {
     font-size: 0.75rem;
   }
 
-  /* Resume Section */
   #resume .container {
     padding-left: 1rem;
     padding-right: 1rem;
@@ -685,7 +654,6 @@ img.glow {
     font-size: 1.25rem;
   }
 
-  /* Contact Section */
   #contact .container {
     padding-left: 1rem;
     padding-right: 1rem;
@@ -703,13 +671,11 @@ img.glow {
     padding: 8px;
   }
 
-  /* Footer */
   .footer .container {
     padding-left: 1rem;
     padding-right: 1rem;
   }
 
-  /* Back to Top Button */
   #back-to-top {
     padding: 0.75rem;
   }
@@ -718,12 +684,11 @@ img.glow {
     font-size: 0.875rem;
   }
 
-  /* Project Modal */
   #project-modal .glassmorphic {
     padding: 1.25rem;
   }
 
-  #modal-image {
+  #modal-media img, #modal-media .video-container {
     height: 160px;
   }
 
@@ -731,7 +696,7 @@ img.glow {
     font-size: 1.25rem;
   }
 
-  #modal-description {
+  #modal-description, #modal-role {
     font-size: 0.875rem;
   }
 
@@ -741,7 +706,7 @@ img.glow {
   }
 }
 
-/* Adjustments for Very Small Screens (below 400px) */
+/* Adjustments for Very Small Screens */
 @media (max-width: 400px) {
   .skill-card {
     flex: 0 0 140px;
