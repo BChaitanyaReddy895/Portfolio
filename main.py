@@ -185,6 +185,21 @@ projects_data = [
             "Integrated web crawling for real-time website translation and advance search mechanisms",
             "Designed the user interface for accessibility and ease of use"
         ]
+    },
+     {
+        "title": "Multi Agentic AI For Sustainable Farming",
+        "description": "It is an AI-powered platform designed to assist farmers with smart crop recommendations, weather insights, market trends, and sustainability tracking. Built by a team of four, it supports multiple languages and promotes eco-friendly practices—empowering farmers through technology, data, and informed decision-making for a better tomorrow.",
+        "technologies": ["AI","Machine Learning","Python","Streamlit","PLotly","Agentic AI"],
+        "githubLink": "https://github.com/BChaitanyaReddy895/Agentic-AI-for-Sustainable-Farming",
+        "liveLink": "https://chaitanya895-multiagenticai.hf.space",
+        "image": "/static/images/agenticAI.png",
+        "role": "Lead Developer and Team Contributor",
+        "contributions": [
+            "Designed the Architecture of each agent, describing what each agent does",
+            "Designed modern and user friendly interface that supports the farmers in using it in a better way for getting the smart recommendations and enhancing their prodcutivity",
+            "Worked on the features includes the soil analysis where i had provided the option to the users to upload the soil images for analysis, Crop Rotation Planner for suggesting the crops to maintain the fertility of the soil",
+            "implemented the features include Fertilizer Optimization Calculator that suggests the farmers for optimum use of fertilizers per hectare and Sustainability Score Tracker for tracking the sustainability score"
+        ]
     }
 ]
 
@@ -242,7 +257,8 @@ talks_data = [
         "event": "REVA University Tech Talk",
         "date": "July 2025",  # Update with actual date
         "description": "Delivered an 8-minute presentation on the Vexa Chatbot, covering its technical architecture, impact, and deployment for the Sahayak Organization.",
-        "videoLink": "https://drive.google.com/file/d/1zNCedqcqOxuD4WvIqn47wZLqG-jG5Qkf/view?usp=sharing"  # Placeholder for actual video link
+        "videoLink": "https://drive.google.com/file/d/1zNCedqcqOxuD4WvIqn47wZLqG-jG5Qkf/view?usp=sharing"
+        
     }
 ]
 
