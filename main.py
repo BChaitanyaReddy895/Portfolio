@@ -13,12 +13,12 @@ app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
 
 # Email configuration (replace with your Gmail credentials)
-EMAIL_ADDRESS = "chaituchaithanyareddy895@gmail.com"
-EMAIL_PASSWORD = "einf clqk oyds ucuj"
-RECIPIENT_EMAIL = "chaituchaithanyareddy895@gmail.com"
+EMAIL_ADDRESS = os.getenv("EMAIL_ADDRESS")
+EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
+RECIPIENT_EMAIL = os.getenv("RECIPIENT_EMAIL")
 
 # Admin password for delete functionality (replace with a secure password)
-ADMIN_PASSWORD = "Chaitu895@"  # Change this to a strong password
+ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")  # Change this to a strong password
 
 # SQLite database paths
 PROJECT_DB_PATH = os.path.join(os.path.dirname(__file__), "data", "portfolio.db")
