@@ -109,6 +109,17 @@ skills_data = [
 achievements_data = [
     {
         "icon": "trophy",
+        "title": "Finalist in Smart India Hackathon(SIH 2025) Hardware Edition",
+        "organization": "Ministry of Education's Innovation Cell(MIC) in Collaboration with AICTE",
+        "description": "Developed an innovative solution for detection of microplastics in water and categorizing them into different types"},
+     {
+        "icon": "award",
+        "title": "Second Runner Up, CodeCortex 2.0",
+        "organization": "VIT, Vellore",
+        "description": "Developed a user friendly platform titled 'Agentic AI For Sustainable Farming' that supports the sustainability parallely increasing in the productivity of farmers thorugh personalized recommendations"
+    },
+    {
+        "icon": "trophy",
         "title": "Screen Smart Ideathon Winner",
         "organization": "IEEE Student Branch, REVA University",
         "description": "Proposed an innovative solution for reducing screen time among students, utilizing that time for upskilling."
@@ -489,3 +500,4 @@ def contact():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=7860)
+
